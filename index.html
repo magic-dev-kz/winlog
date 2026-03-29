@@ -2824,6 +2824,10 @@ async function refreshInsights() {
     container.appendChild(moodCard);
   }
 
+  // v13: Monthly Highlights
+  const highlightsCard = buildMonthlyHighlights(entries);
+  if (highlightsCard) container.appendChild(highlightsCard);
+
   // v5: Growth chart
   await renderGrowthChart();
 
@@ -2842,6 +2846,82 @@ async function refreshInsights() {
       <div class="best-entry-date">&mdash; ${formatDateRu(d)}</div>`;
     container.appendChild(card);
   }
+}
+
+// v13: Monthly Highlights
+function buildMonthlyHighlights(allEntries) {
+  // Filter to current month
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthEntries = allEntries.filter(e => new Date(e.date + 'T00:00:00') >= monthStart);
+
+  if (monthEntries.length < 2) return null;
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const currentMonth = monthNames[now.getMonth()];
+
+  // 1. Best Day: date with most wins
+  const dayWins = {};
+  monthEntries.forEach(e => {
+    dayWins[e.date] = (dayWins[e.date] || 0) + e.wins.length;
+  });
+  let bestDayKey = null, bestDayCount = 0;
+  Object.entries(dayWins).forEach(([d, c]) => {
+    if (c > bestDayCount) { bestDayKey = d; bestDayCount = c; }
+  });
+  const bestDayDate = bestDayKey ? new Date(bestDayKey + 'T00:00:00') : null;
+  const bestDayLabel = bestDayDate ? (currentMonth + ' ' + bestDayDate.getDate()) : 'N/A';
+
+  // 2. Most Active Category
+  const catCounts = {};
+  let totalWins = 0;
+  monthEntries.forEach(e => e.wins.forEach(w => {
+    totalWins++;
+    (w.category || ['other']).forEach(c => { catCounts[c] = (catCounts[c] || 0) + 1; });
+  }));
+  let topCatId = 'other', topCatCount = 0;
+  Object.entries(catCounts).forEach(([id, count]) => {
+    if (count > topCatCount) { topCatId = id; topCatCount = count; }
+  });
+  const topCat = catById(topCatId);
+  const topCatPct = totalWins > 0 ? Math.round(topCatCount / totalWins * 100) : 0;
+
+  // 3. Longest Streak (consecutive days with at least 1 win in current month)
+  const daysWithWins = new Set(Object.keys(dayWins));
+  let longestStreak = 0, currentStreak = 0;
+  const d = new Date(monthStart);
+  while (d <= now) {
+    const key = dateKey(d);
+    if (daysWithWins.has(key)) {
+      currentStreak++;
+      if (currentStreak > longestStreak) longestStreak = currentStreak;
+    } else {
+      currentStreak = 0;
+    }
+    d.setDate(d.getDate() + 1);
+  }
+
+  const card = document.createElement('div');
+  card.className = 'insight-card';
+  card.innerHTML = `<h3 style="margin-bottom:12px">Monthly Highlights</h3>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--bg-secondary)">
+        <span style="font-size:22px" aria-hidden="true">&#127942;</span>
+        <div style="flex:1"><div style="font-size:var(--font-small);color:var(--text-secondary)">Best Day</div>
+        <div style="font-weight:700">${escapeHtml(bestDayLabel)} <span style="color:var(--accent-primary)">(${bestDayCount} wins)</span></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--bg-secondary)">
+        <span style="font-size:22px" aria-hidden="true">&#128202;</span>
+        <div style="flex:1"><div style="font-size:var(--font-small);color:var(--text-secondary)">Most Active Category</div>
+        <div style="font-weight:700;color:${topCat.color}">${escapeHtml(topCat.label)} <span style="color:var(--text-secondary);font-weight:400">(${topCatPct}%)</span></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--bg-secondary)">
+        <span style="font-size:22px" aria-hidden="true">&#128293;</span>
+        <div style="flex:1"><div style="font-size:var(--font-small);color:var(--text-secondary)">Longest Streak</div>
+        <div style="font-weight:700">${longestStreak} days</div></div>
+      </div>
+    </div>`;
+  return card;
 }
 
 function updatePeriodSlider() {

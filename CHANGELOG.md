@@ -1,5 +1,13 @@
 # Changelog
 
+## v13.0 — Monthly Highlights (2026-03-29)
+- **Monthly Highlights card** in Insights: "Best Day: March 15 (5 wins)", "Most Active Category: Work (42%)", "Longest Streak: 12 days"
+- Three highlight rows with icons (trophy, chart, fire) on accent background
+- Calculates from current month's entries; hidden if fewer than 2 entries
+- Service worker cache bumped to `winlog-v13.0`
+
+---
+
 ## v12.0 — Zoom, Sparkline & Sound (2026-03-29)
 - **Entry Word Count**: live word counter shown below win fields while typing; auto-hides when empty
 - **Mood Trend Sparkline**: small bar chart in the mood section showing mood distribution over the last 30 days with colored bars and legend; updates on save
