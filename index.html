@@ -16,7 +16,7 @@
 <title>WinLog</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
    CSS CUSTOM PROPERTIES & THEMES
@@ -32,7 +32,7 @@
   --accent-glow: rgba(232,168,23,0.2);
   --text-primary: #3D2C1E;
   --text-secondary: #7A6555;
-  --text-muted: #8A7464;
+  --text-muted: #7A6454;
   --text-on-accent: #3D2C1E;
   --text-link: #C67F17;
   --tag-career: #2A6AB8; --tag-career-bg: #EBF3FB;
@@ -43,14 +43,15 @@
   --tag-finance: #1E8A90; --tag-finance-bg: #E6F6F7;
   --tag-other: #7A6A5A; --tag-other-bg: #F5F0EB;
   --streak-flame: #FF9F1C;
-  --heatmap-0: #F0E8DD; --heatmap-1: #C8E6C9; --heatmap-2: #81C784; --heatmap-3: #F5C842;
+  --heatmap-0: #F0E8DD; --heatmap-1: #B8DCBA; --heatmap-2: #6BBF70; --heatmap-3: #F5C842;
   --victory-gold: #F5C842; --victory-amber: #FF9F1C; --victory-coral: #FF6B6B; --victory-rose: #FFB4A2;
   --border-subtle: #E8DDD0;
   --border-input: #D4C4B0;
   --border-focus: #E8A817;
-  --shadow-card: 0 2px 12px rgba(61,44,30,0.06);
-  --shadow-elevated: 0 8px 32px rgba(61,44,30,0.10);
-  --shadow-glow: 0 0 24px rgba(232,168,23,0.15);
+  --shadow-card: 0 1px 3px rgba(61,44,30,0.04), 0 4px 16px rgba(61,44,30,0.08);
+  --shadow-elevated: 0 2px 8px rgba(61,44,30,0.06), 0 12px 40px rgba(61,44,30,0.12);
+  --shadow-glow: 0 0 20px rgba(232,168,23,0.18), 0 0 48px rgba(232,168,23,0.08);
+  --shadow-card-hover: 0 2px 6px rgba(61,44,30,0.06), 0 8px 30px rgba(61,44,30,0.12), 0 0 20px rgba(232,168,23,0.06);
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-hero: 2rem; --font-h1: 1.5rem; --font-h2: 1.25rem;
   --font-body: 1rem; --font-small: 0.875rem; --font-caption: 0.75rem;
@@ -70,8 +71,10 @@
     --text-on-accent: #3D2C1E;
     --accent-primary: #F5C842; --accent-hover: #E8A817; --accent-light: #3D3329;
     --border-subtle: #3D3329; --border-input: #4A3F35; --border-focus: #F5C842;
-    --shadow-card: 0 2px 12px rgba(0,0,0,0.2); --shadow-elevated: 0 8px 32px rgba(0,0,0,0.3);
-    --shadow-glow: 0 0 24px rgba(245,200,66,0.15);
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.25);
+    --shadow-elevated: 0 2px 8px rgba(0,0,0,0.2), 0 12px 40px rgba(0,0,0,0.35);
+    --shadow-glow: 0 0 20px rgba(245,200,66,0.18), 0 0 48px rgba(245,200,66,0.08);
+    --shadow-card-hover: 0 2px 6px rgba(0,0,0,0.2), 0 8px 30px rgba(0,0,0,0.3), 0 0 20px rgba(245,200,66,0.08);
     --heatmap-0: #2A221C;
     --tag-career: #6BAAEE; --tag-career-bg: #1a2a3d;
     --tag-health: #7CD47C; --tag-health-bg: #1a2d1a;
@@ -88,8 +91,10 @@
   --text-on-accent: #3D2C1E;
   --accent-primary: #F5C842; --accent-hover: #E8A817; --accent-light: #3D3329;
   --border-subtle: #3D3329; --border-input: #4A3F35; --border-focus: #F5C842;
-  --shadow-card: 0 2px 12px rgba(0,0,0,0.2); --shadow-elevated: 0 8px 32px rgba(0,0,0,0.3);
-  --shadow-glow: 0 0 24px rgba(245,200,66,0.15);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.25);
+  --shadow-elevated: 0 2px 8px rgba(0,0,0,0.2), 0 12px 40px rgba(0,0,0,0.35);
+  --shadow-glow: 0 0 20px rgba(245,200,66,0.18), 0 0 48px rgba(245,200,66,0.08);
+  --shadow-card-hover: 0 2px 6px rgba(0,0,0,0.2), 0 8px 30px rgba(0,0,0,0.3), 0 0 20px rgba(245,200,66,0.08);
   --heatmap-0: #2A221C;
   --tag-career: #6BAAEE; --tag-career-bg: #1a2a3d;
   --tag-health: #7CD47C; --tag-health-bg: #1a2d1a;
@@ -106,8 +111,10 @@
   --accent-primary: #E8A817; --accent-hover: #D4960F; --accent-light: #FFF0C2;
   --accent-glow: rgba(232,168,23,0.2);
   --border-subtle: #E0E0E0; --border-input: #CCCCCC; --border-focus: #E8A817;
-  --shadow-card: 0 2px 12px rgba(0,0,0,0.06); --shadow-elevated: 0 8px 32px rgba(0,0,0,0.10);
-  --shadow-glow: 0 0 24px rgba(232,168,23,0.15);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-elevated: 0 2px 8px rgba(0,0,0,0.06), 0 12px 40px rgba(0,0,0,0.12);
+  --shadow-glow: 0 0 20px rgba(232,168,23,0.18), 0 0 48px rgba(232,168,23,0.08);
+  --shadow-card-hover: 0 2px 6px rgba(0,0,0,0.06), 0 8px 30px rgba(0,0,0,0.12), 0 0 20px rgba(232,168,23,0.06);
   --tag-career: #2A6AB8; --tag-career-bg: #E0EDFA;
   --tag-health: #3A8C3A; --tag-health-bg: #E0F0E0;
   --tag-relations: #C44E5A; --tag-relations-bg: #FAE0E3;
@@ -124,7 +131,11 @@
 html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 body {
   font-family: var(--font-family);
-  background: var(--bg-primary);
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,168,23,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 80%, rgba(245,200,66,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255,240,194,0.08) 0%, transparent 70%),
+    var(--bg-primary);
   color: var(--text-primary);
   line-height: var(--lh-normal);
   min-height: 100dvh;
@@ -140,6 +151,28 @@ a { color: var(--text-link); text-decoration: none; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ═══════════════════════════════════════════
+   V3 MICRO-ANIMATIONS
+   ═══════════════════════════════════════════ */
+@keyframes cardIn {
+  0% { opacity: 0; transform: translateY(24px) scale(0.97); }
+  60% { opacity: 1; transform: translateY(-4px) scale(1.005); }
+  80% { transform: translateY(2px) scale(0.998); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+@keyframes streakPulse {
+  0%, 100% { filter: brightness(1); text-shadow: 0 0 8px rgba(232,168,23,0.3); }
+  50% { filter: brightness(1.15); text-shadow: 0 0 20px rgba(232,168,23,0.5); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(232,168,23,0.15); }
+  50% { box-shadow: 0 0 24px rgba(232,168,23,0.3); }
 }
 
 /* ═══════════════════════════════════════════
@@ -185,10 +218,10 @@ a { color: var(--text-link); text-decoration: none; }
   max-width: 640px;
   height: calc(64px + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: var(--bg-elevated);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-elevated) 75%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid color-mix(in srgb, var(--border-subtle) 50%, transparent);
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -204,11 +237,19 @@ a { color: var(--text-link); text-decoration: none; }
   min-width: 64px;
   min-height: 44px;
   color: var(--text-muted);
-  transition: color var(--duration-fast) var(--ease-default);
+  transition: color var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-bounce);
   position: relative;
 }
-.tab-btn[aria-selected="true"] { color: var(--accent-primary); }
-.tab-btn svg { width: 24px; height: 24px; }
+.tab-btn:hover { transform: translateY(-2px); }
+.tab-btn[aria-selected="true"] {
+  color: transparent;
+  background: linear-gradient(135deg, var(--accent-primary), var(--victory-amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.tab-btn svg { width: 24px; height: 24px; transition: transform var(--duration-fast) var(--ease-bounce); }
+.tab-btn:hover svg { transform: scale(1.15); }
+.tab-btn[aria-selected="true"] svg { color: var(--accent-primary); }
 .tab-btn span { font-size: var(--font-caption); font-weight: 500; }
 .tab-indicator {
   position: absolute;
@@ -249,10 +290,13 @@ a { color: var(--text-link); text-decoration: none; }
 .onb-icon { font-size: 4rem; }
 /* Welcome step enhanced card */
 .onb-welcome-card {
-  background: var(--bg-elevated);
+  background: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   border-radius: 24px;
   padding: 40px 32px 36px;
-  box-shadow: 0 8px 40px rgba(61, 44, 30, 0.10);
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid color-mix(in srgb, var(--border-subtle) 40%, transparent);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -274,9 +318,12 @@ a { color: var(--text-link); text-decoration: none; }
 }
 .onb-welcome-title {
   font-size: 28px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .onb-welcome-subtitle {
   font-size: 15px;
@@ -307,7 +354,7 @@ a { color: var(--text-link); text-decoration: none; }
   font-size: 18px;
   flex-shrink: 0;
 }
-.onb-title { font-size: var(--font-h1); font-weight: 700; line-height: var(--lh-tight); }
+.onb-title { font-size: var(--font-h1); font-weight: 800; line-height: var(--lh-tight); letter-spacing: -0.02em; }
 .onb-text { font-size: var(--font-body); color: var(--text-secondary); }
 .onb-input {
   width: 100%; padding: 14px 18px;
@@ -315,7 +362,8 @@ a { color: var(--text-link); text-decoration: none; }
   border-radius: var(--radius-md); font-size: var(--font-h2); text-align: center;
   outline: none; transition: border-color var(--duration-fast);
 }
-.onb-input:focus { border-color: var(--border-focus); box-shadow: var(--shadow-glow); }
+.onb-input:hover { border-color: color-mix(in srgb, var(--border-focus) 50%, var(--border-input)); }
+.onb-input:focus { border-color: var(--border-focus); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 18%, transparent), var(--shadow-glow); }
 .onb-options { display: flex; gap: var(--space-md); width: 100%; }
 .onb-option {
   flex: 1; padding: var(--space-md); border: 2px solid var(--border-input);
@@ -338,14 +386,28 @@ a { color: var(--text-link); text-decoration: none; }
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
   padding: 14px 28px; min-height: 52px; width: 100%;
-  background: var(--accent-primary); color: var(--text-on-accent);
-  border-radius: var(--radius-xl); font-weight: 500; font-size: var(--font-body);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--victory-amber) 50%, var(--accent-primary) 100%);
+  background-size: 200% 200%;
+  color: var(--text-on-accent);
+  border-radius: var(--radius-xl); font-weight: 600; font-size: var(--font-body);
   box-shadow: var(--shadow-glow);
-  transition: background var(--duration-fast), transform var(--duration-fast);
+  transition: background-position var(--duration-normal), transform var(--duration-fast) var(--ease-bounce), box-shadow var(--duration-fast);
+  position: relative;
+  overflow: hidden;
 }
-.btn-primary:hover { background: var(--accent-hover); }
-.btn-primary:active { transform: scale(0.97); }
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+  transform: translateX(-100%) skewX(-15deg);
+  transition: none;
+}
+.btn-primary:hover { background-position: 100% 100%; box-shadow: 0 0 28px rgba(232,168,23,0.35), 0 0 56px rgba(232,168,23,0.12); }
+.btn-primary:hover::before { animation: shimmer 0.8s ease forwards; }
+.btn-primary:active { transform: scale(0.96); transition-duration: 80ms; }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-primary:disabled::before { animation: none; }
 .btn-secondary {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
   padding: 10px 20px; min-height: 44px;
@@ -374,13 +436,29 @@ a { color: var(--text-link); text-decoration: none; }
   display: flex; justify-content: space-between; align-items: flex-start;
   margin-bottom: var(--space-lg);
 }
-.today-greeting h1 { font-size: var(--font-hero); font-weight: 700; line-height: var(--lh-tight); }
+.today-greeting h1 {
+  font-size: var(--font-hero); font-weight: 800; line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .today-greeting .date { font-size: var(--font-small); color: var(--text-secondary); margin-top: var(--space-xs); }
 .streak-badge {
   display: inline-flex; align-items: center; gap: var(--space-xs);
   padding: 6px 14px; background: var(--accent-light);
-  border-radius: var(--radius-full); font-weight: 600; font-size: var(--font-small);
+  border-radius: var(--radius-full); font-weight: 700; font-size: var(--font-small);
   white-space: nowrap;
+  background: linear-gradient(135deg, var(--accent-light), color-mix(in srgb, var(--accent-primary) 15%, var(--accent-light)));
+  animation: glowPulse 3s ease-in-out infinite;
+}
+.streak-badge span:not(.flame) {
+  background: linear-gradient(135deg, var(--accent-primary), var(--victory-amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: streakPulse 3s ease-in-out infinite;
 }
 .streak-badge[hidden] { display: none; }
 .streak-badge .flame {
@@ -402,7 +480,8 @@ a { color: var(--text-link); text-decoration: none; }
   border-radius: var(--radius-md); padding: 12px 16px;
   transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
 }
-.win-field:focus-within { border-color: var(--border-focus); box-shadow: var(--shadow-glow); }
+.win-field:hover { border-color: color-mix(in srgb, var(--border-focus) 50%, var(--border-input)); }
+.win-field:focus-within { border-color: var(--border-focus); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 18%, transparent), var(--shadow-glow); }
 .win-field:focus-within .win-num { color: var(--accent-primary); }
 .win-num { font-weight: 600; color: var(--text-muted); min-width: 22px; padding-top: 2px; }
 .win-input {
@@ -485,14 +564,15 @@ a { color: var(--text-link); text-decoration: none; }
    TIMELINE SCREEN
    ═══════════════════════════════════════════ */
 .timeline-header { margin-bottom: var(--space-lg); }
-.timeline-header h1 { font-size: var(--font-h1); font-weight: 700; margin-bottom: var(--space-md); }
+.timeline-header h1 { font-size: var(--font-h1); font-weight: 800; margin-bottom: var(--space-md); letter-spacing: -0.02em; }
 .search-box {
   display: flex; align-items: center; gap: var(--space-sm);
   background: var(--bg-secondary); border: 1px solid var(--border-input);
   border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: var(--space-md);
   transition: border-color var(--duration-fast);
 }
-.search-box:focus-within { border-color: var(--border-focus); }
+.search-box:hover { border-color: color-mix(in srgb, var(--border-focus) 50%, var(--border-input)); }
+.search-box:focus-within { border-color: var(--border-focus); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 18%, transparent); }
 .search-box svg { width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0; }
 .search-box input { flex: 1; border: none; background: transparent; outline: none; }
 .search-box input::placeholder { color: var(--text-muted); }
@@ -519,7 +599,20 @@ a { color: var(--text-link); text-decoration: none; }
 .timeline-card {
   background: var(--bg-secondary); border-radius: var(--radius-lg);
   padding: var(--space-md); box-shadow: var(--shadow-card);
+  border-left: 3px solid var(--accent-primary);
+  animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  transition: box-shadow var(--duration-normal) var(--ease-default), transform var(--duration-normal) var(--ease-bounce);
 }
+.timeline-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+.timeline-card:nth-child(1) { animation-delay: 0ms; }
+.timeline-card:nth-child(2) { animation-delay: 60ms; }
+.timeline-card:nth-child(3) { animation-delay: 120ms; }
+.timeline-card:nth-child(4) { animation-delay: 180ms; }
+.timeline-card:nth-child(5) { animation-delay: 240ms; }
+.timeline-card:nth-child(n+6) { animation-delay: 300ms; }
 .timeline-card-wins { list-style: none; }
 .timeline-card-wins li { padding: 4px 0; line-height: var(--lh-normal); }
 .timeline-card-wins li::before { content: '\2014\00a0'; color: var(--text-muted); }
@@ -545,7 +638,7 @@ mark { background: var(--accent-light); color: var(--text-primary); border-radiu
    INSIGHTS SCREEN
    ═══════════════════════════════════════════ */
 .insights-header { margin-bottom: var(--space-lg); }
-.insights-header h1 { font-size: var(--font-h1); font-weight: 700; margin-bottom: var(--space-md); }
+.insights-header h1 { font-size: var(--font-h1); font-weight: 800; margin-bottom: var(--space-md); letter-spacing: -0.02em; }
 .period-switcher {
   display: flex; background: var(--bg-secondary); border-radius: var(--radius-full);
   padding: 3px; position: relative;
@@ -567,8 +660,18 @@ mark { background: var(--accent-light); color: var(--text-primary); border-radiu
 .insight-card {
   background: var(--bg-secondary); border-radius: var(--radius-lg);
   padding: var(--space-md); box-shadow: var(--shadow-card);
+  animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  transition: box-shadow var(--duration-normal) var(--ease-default), transform var(--duration-normal) var(--ease-bounce);
 }
-.insight-card h3 { font-size: var(--font-body); font-weight: 600; margin-bottom: var(--space-md); }
+.insight-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+.insight-card:nth-child(1) { animation-delay: 0ms; }
+.insight-card:nth-child(2) { animation-delay: 80ms; }
+.insight-card:nth-child(3) { animation-delay: 160ms; }
+.insight-card:nth-child(4) { animation-delay: 240ms; }
+.insight-card h3 { font-size: var(--font-body); font-weight: 700; margin-bottom: var(--space-md); letter-spacing: -0.01em; }
 .insight-card.accent-card {
   background: linear-gradient(135deg, var(--accent-light), var(--bg-secondary));
 }
@@ -651,7 +754,8 @@ mark { background: var(--accent-light); color: var(--text-primary); border-radiu
   border: 1px solid var(--border-input); border-radius: var(--radius-md);
   outline: none; transition: border-color var(--duration-fast);
 }
-.settings-input:focus { border-color: var(--border-focus); }
+.settings-input:hover { border-color: color-mix(in srgb, var(--border-focus) 50%, var(--border-input)); }
+.settings-input:focus { border-color: var(--border-focus); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 18%, transparent); }
 .theme-options { display: flex; gap: var(--space-sm); }
 .theme-opt {
   flex: 1; padding: var(--space-md); border: 2px solid var(--border-input);
@@ -784,6 +888,303 @@ button:focus-visible, .tab-btn:focus-visible {
   width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
   color: var(--text-muted); font-size: 14px; cursor: pointer;
 }
+
+/* ═══════════════════════════════════════════
+   V3 PREMIUM ENHANCEMENTS
+   ═══════════════════════════════════════════ */
+
+/* Heatmap cell glow */
+.heatmap-tooltip + svg rect[fill],
+svg rect[rx] {
+  transition: filter var(--duration-fast);
+}
+
+/* Superpower heading gradient */
+.superpower-cat {
+  background: linear-gradient(135deg, var(--accent-primary), var(--victory-amber), var(--victory-coral));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Milestone number enhanced */
+.milestone-number {
+  background: linear-gradient(135deg, var(--victory-gold), var(--victory-amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+/* Settings panel header */
+.settings-panel h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Export modal glassmorphism */
+.export-modal {
+  background: color-mix(in srgb, var(--bg-elevated) 85%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+/* Win field entrance animation */
+.win-field {
+  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.win-field:nth-child(1) { animation-delay: 0ms; }
+.win-field:nth-child(2) { animation-delay: 50ms; }
+.win-field:nth-child(3) { animation-delay: 100ms; }
+.win-field:nth-child(4) { animation-delay: 150ms; }
+.win-field:nth-child(5) { animation-delay: 200ms; }
+
+/* Category pills hover lift */
+.cat-pill {
+  transition: all var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-bounce);
+}
+.cat-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Filter pills hover */
+.filter-pill {
+  transition: all var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-bounce);
+}
+.filter-pill:hover {
+  transform: translateY(-1px);
+}
+
+/* Today subtitle */
+.today-subtitle {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Today existing entries h2 */
+.today-existing h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Onboarding welcome features glassmorphism items */
+.onb-welcome-features li {
+  transition: transform var(--duration-fast) var(--ease-bounce), box-shadow var(--duration-fast);
+}
+.onb-welcome-features li:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Progress bar gradient */
+.progress-bar-fill {
+  background: linear-gradient(90deg, var(--accent-primary), var(--victory-amber));
+}
+
+/* Trophy ring enhanced glow */
+.onb-trophy-ring {
+  box-shadow: 0 4px 20px rgba(232,168,23,0.25), 0 0 40px rgba(232,168,23,0.1);
+}
+
+/* Settings btn glassmorphism */
+.settings-btn {
+  background: color-mix(in srgb, var(--bg-elevated) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: color var(--duration-fast), transform var(--duration-fast) var(--ease-bounce);
+}
+.settings-btn:hover {
+  color: var(--accent-primary);
+  transform: rotate(30deg);
+}
+
+/* Secondary button hover glow */
+.btn-secondary:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 10%, transparent);
+}
+
+/* Ghost button transition */
+.btn-ghost {
+  transition: color var(--duration-fast), transform var(--duration-fast);
+}
+.btn-ghost:active {
+  transform: scale(0.96);
+}
+
+/* Existing win entry hover */
+.existing-win {
+  transition: background var(--duration-fast);
+  border-radius: var(--radius-sm);
+  padding-left: var(--space-sm);
+  padding-right: var(--space-sm);
+}
+.existing-win:hover {
+  background: color-mix(in srgb, var(--accent-light) 30%, transparent);
+}
+
+/* Voice overlay glassmorphism */
+.voice-overlay {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Period switcher slider gradient */
+.period-slider {
+  background: linear-gradient(135deg, var(--accent-primary), var(--victory-amber));
+}
+
+/* ═══════════════════════════════════════════
+   V4 — SEARCH/FILTER, PIN, MOOD, STREAK ACHIEVEMENTS
+   ═══════════════════════════════════════════ */
+
+/* Date filter row */
+.date-filter-row {
+  display: flex; gap: var(--space-sm); margin-top: var(--space-sm);
+  overflow-x: auto; padding-bottom: var(--space-sm);
+  -webkit-overflow-scrolling: touch;
+}
+.date-filter-row::-webkit-scrollbar { display: none; }
+.date-filter-pill {
+  padding: 6px 14px; border-radius: var(--radius-full);
+  font-size: var(--font-caption); font-weight: 500;
+  border: 1px solid var(--border-input); color: var(--text-secondary);
+  white-space: nowrap; cursor: pointer; min-height: 32px;
+  transition: all var(--duration-fast) var(--ease-default), transform var(--duration-fast) var(--ease-bounce);
+}
+.date-filter-pill:hover { transform: translateY(-1px); }
+.date-filter-pill[aria-pressed="true"] {
+  background: var(--accent-primary); color: var(--text-on-accent);
+  border-color: var(--accent-primary);
+}
+
+/* Search highlight */
+mark {
+  background: var(--accent-light); color: var(--text-primary);
+  border-radius: 2px; padding: 0 2px;
+}
+
+/* Pin button on timeline cards */
+.pin-btn {
+  width: 32px; height: 32px; min-width: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); border-radius: 50%;
+  transition: color var(--duration-fast), background var(--duration-fast), transform var(--duration-fast) var(--ease-bounce);
+  font-size: 16px; cursor: pointer;
+}
+.pin-btn:hover { color: var(--accent-primary); background: var(--accent-light); transform: scale(1.15); }
+.pin-btn.pinned {
+  color: var(--accent-primary);
+  transform: rotate(-30deg);
+}
+.timeline-card.pinned-card {
+  border-left: 3px solid var(--victory-gold);
+  background: linear-gradient(135deg, var(--accent-light) 0%, var(--bg-secondary) 60%);
+}
+.pinned-label {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: var(--font-caption); color: var(--victory-amber);
+  font-weight: 600; margin-bottom: var(--space-xs);
+}
+
+/* Mood selector */
+.mood-section { margin-bottom: var(--space-lg); }
+.mood-label { font-size: var(--font-small); color: var(--text-secondary); margin-bottom: var(--space-sm); }
+.mood-row { display: flex; gap: var(--space-sm); }
+.mood-btn {
+  width: 44px; height: 44px; font-size: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-full); border: 2px solid var(--border-input);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-bounce);
+}
+.mood-btn:hover { transform: scale(1.15); border-color: var(--accent-primary); }
+.mood-btn[aria-checked="true"] {
+  border-color: var(--accent-primary);
+  background: var(--accent-light);
+  transform: scale(1.1);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.mood-inline {
+  font-size: 16px; margin-left: 6px; vertical-align: middle;
+}
+.mood-week-stat {
+  font-size: var(--font-small); color: var(--text-secondary);
+  margin-top: var(--space-sm); padding: 8px 12px;
+  background: var(--bg-secondary); border-radius: var(--radius-md);
+  display: none;
+}
+.mood-week-stat.visible { display: block; }
+
+/* Streak achievement trophies in header */
+.streak-trophies {
+  display: flex; gap: 4px; margin-top: var(--space-xs);
+  flex-wrap: wrap;
+}
+.streak-trophy {
+  width: 28px; height: 28px; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-light);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: transform var(--duration-fast) var(--ease-bounce);
+  cursor: default;
+  position: relative;
+}
+.streak-trophy:hover { transform: scale(1.2); }
+.streak-trophy[title]::after {
+  content: attr(title);
+  position: absolute; bottom: -24px; left: 50%;
+  transform: translateX(-50%); white-space: nowrap;
+  font-size: 10px; color: var(--text-muted);
+  background: var(--bg-elevated); padding: 2px 6px;
+  border-radius: 4px; box-shadow: var(--shadow-card);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--duration-fast);
+}
+.streak-trophy:hover::after { opacity: 1; }
+.streak-trophy.locked { opacity: 0.3; filter: grayscale(1); }
+
+/* Congratulations overlay animation */
+@keyframes confettiBurst {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.congrats-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 260;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: var(--space-md); cursor: pointer;
+  animation: confettiBurst 0.5s var(--ease-bounce) both;
+}
+.congrats-overlay[hidden] { display: none; }
+.congrats-trophy { font-size: 80px; animation: flame-wiggle 1s ease-in-out infinite; }
+.congrats-title {
+  font-size: var(--font-hero); font-weight: 900;
+  background: linear-gradient(135deg, var(--victory-gold), var(--victory-amber));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-align: center; letter-spacing: -0.02em;
+}
+.congrats-subtitle {
+  font-size: var(--font-h2); color: var(--text-secondary);
+  text-align: center; max-width: 300px;
+}
+.congrats-btn {
+  margin-top: var(--space-md);
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--victory-amber));
+  color: var(--text-on-accent); border-radius: var(--radius-xl);
+  font-weight: 600; font-size: var(--font-body);
+  box-shadow: var(--shadow-glow);
+}
 </style>
 </head>
 <body>
@@ -862,9 +1263,12 @@ button:focus-visible, .tab-btn:focus-visible {
         <h1 id="greetingText"></h1>
         <div class="date" id="todayDate"></div>
       </div>
-      <div class="streak-badge" id="streakBadge" hidden aria-label="">
-        <span class="flame" aria-hidden="true">&#128293;</span>
-        <span id="streakCount"></span>
+      <div>
+        <div class="streak-badge" id="streakBadge" hidden aria-label="">
+          <span class="flame" aria-hidden="true">&#128293;</span>
+          <span id="streakCount"></span>
+        </div>
+        <div class="streak-trophies" id="streakTrophies"></div>
       </div>
     </div>
     <div class="today-subtitle">Чем ты гордишься сегодня?</div>
@@ -876,6 +1280,11 @@ button:focus-visible, .tab-btn:focus-visible {
     <div class="categories-section">
       <div class="categories-label">Категории:</div>
       <div class="categories-row" id="categoriesRow" role="group" aria-label="Категории"></div>
+    </div>
+    <div class="mood-section">
+      <div class="mood-label">Настроение (опционально):</div>
+      <div class="mood-row" id="moodRow" role="radiogroup" aria-label="Настроение"></div>
+      <div class="mood-week-stat" id="moodWeekStat"></div>
     </div>
     <div class="save-area">
       <button class="btn-primary" id="saveBtn" disabled>
@@ -895,6 +1304,7 @@ button:focus-visible, .tab-btn:focus-visible {
         <input type="search" id="timelineSearch" placeholder="Поиск..." aria-label="Поиск по записям">
       </div>
       <div class="filter-row" id="filterRow" role="group" aria-label="Фильтр по категориям"></div>
+      <div class="date-filter-row" id="dateFilterRow" role="group" aria-label="Фильтр по дате"></div>
     </div>
     <div class="timeline-list" id="timelineList"></div>
   </div>
@@ -989,6 +1399,9 @@ button:focus-visible, .tab-btn:focus-visible {
 
 <!-- ═══ Calendar Day Popup ═══ -->
 <div class="calendar-day-popup" id="calendarDayPopup" hidden></div>
+
+<!-- ═══ Congrats Overlay (v4) ═══ -->
+<div class="congrats-overlay" id="congratsOverlay" hidden></div>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════════
@@ -1226,6 +1639,27 @@ let exportFormat = 'txt';
 let activeFocusTrap = null;
 let modalTrigger = null;
 
+// v4 state
+let selectedMood = null;
+let dateFilter = 'all'; // 'week', 'month', 'all'
+const MOODS = [
+  { emoji: '\u{1F60A}', label: 'Happy' },
+  { emoji: '\u{1F610}', label: 'Neutral' },
+  { emoji: '\u{1F614}', label: 'Sad' },
+  { emoji: '\u{1F525}', label: 'On fire' },
+  { emoji: '\u{1F4AA}', label: 'Strong' },
+];
+const STREAK_MILESTONES = [7, 14, 21, 30, 60, 90];
+const STREAK_MILESTONE_META = [
+  { days: 7, emoji: '\u{2B50}', label: '7 days' },
+  { days: 14, emoji: '\u{1F31F}', label: '14 days' },
+  { days: 21, emoji: '\u{1F3C5}', label: '21 days' },
+  { days: 30, emoji: '\u{1F3C6}', label: '30 days' },
+  { days: 60, emoji: '\u{1F48E}', label: '60 days' },
+  { days: 90, emoji: '\u{1F451}', label: '90 days' },
+];
+const MAX_PINNED = 5;
+
 // ═══════════════════════════════════════════
 // Onboarding
 // ═══════════════════════════════════════════
@@ -1402,6 +1836,7 @@ async function saveEntry() {
   }));
   const today = dateKey(new Date());
   const entry = { date: today, wins, createdAt: new Date().toISOString() };
+  if (selectedMood) entry.mood = selectedMood;
   try {
     await db.addEntry(entry);
   } catch (e) {
@@ -1414,7 +1849,9 @@ async function saveEntry() {
   // Clear fields
   document.querySelectorAll('#winFields .win-input').forEach(i => { i.value = ''; autoResize(i); });
   selectedCategories.clear();
+  selectedMood = null;
   renderCategories();
+  renderMoodSelector();
   updateSaveBtn();
   refreshTodayExisting();
 }
@@ -1469,7 +1906,7 @@ async function refreshTodayExisting() {
       div.className = 'existing-win';
       const textDiv = document.createElement('div');
       textDiv.className = 'existing-win-text';
-      textDiv.textContent = w.text;
+      textDiv.textContent = w.text + (entry.mood && wi === 0 ? ' ' + entry.mood : '');
       const catsDiv = document.createElement('div');
       catsDiv.className = 'existing-win-cats';
       (w.category || []).forEach(cid => {
@@ -1529,13 +1966,17 @@ async function checkStreak() {
     badge.hidden = false;
     countEl.textContent = streak;
     badge.setAttribute('aria-label', `Серия: ${streak} дней подряд`);
-    // Milestone check
-    if ([7, 14, 30, 60, 100, 365].includes(streak)) {
+    // v4: Check milestone achievements
+    checkAndShowCongrats(streak);
+    // Legacy milestone check for non-v4 milestones
+    if ([100, 365].includes(streak)) {
       showMilestone(streak);
     }
   } else {
     badge.hidden = true;
   }
+  // v4: Render trophy badges
+  renderStreakTrophies(streak);
 }
 
 function refreshToday() {
@@ -1708,11 +2149,14 @@ function renderFilterRow() {
 
 async function refreshTimeline() {
   renderFilterRow();
+  renderDateFilterRow();
   let entries;
   try { entries = await db.getAll(); } catch { entries = []; }
   // Sort newest first
   entries.sort((a, b) => b.date.localeCompare(a.date) || new Date(b.createdAt) - new Date(a.createdAt));
-  // Filter
+  // v4: Date filter
+  entries = applyDateFilter(entries);
+  // Filter by category
   if (filterCategory) {
     entries = entries.filter(e => e.wins.some(w => (w.category || []).includes(filterCategory)));
   }
@@ -1729,7 +2173,11 @@ async function refreshTimeline() {
       return false;
     });
   }
-  timelineEntries = entries;
+  // v4: Separate pinned entries to show at top
+  const pinnedIds = getPinnedIds();
+  const pinnedEntries = entries.filter(e => pinnedIds.includes(e.id));
+  const unpinnedEntries = entries.filter(e => !pinnedIds.includes(e.id));
+  timelineEntries = [...pinnedEntries, ...unpinnedEntries];
   timelineDisplayed = 0;
   const list = document.getElementById('timelineList');
   list.innerHTML = '';
@@ -1754,8 +2202,11 @@ function loadMoreTimeline() {
   const today = dateKey(new Date());
   const yesterday = dateKey(daysAgo(1));
 
+  const pinnedIds = getPinnedIds();
   toShow.forEach(entry => {
+    const entryPinned = pinnedIds.includes(entry.id);
     if (entry.date !== lastDate) {
+      // If switching from pinned to unpinned section, add separator
       const sep = document.createElement('div');
       sep.className = 'date-separator';
       sep.dataset.date = entry.date;
@@ -1768,8 +2219,17 @@ function loadMoreTimeline() {
       lastDate = entry.date;
     }
     const card = document.createElement('div');
-    card.className = 'timeline-card';
+    card.className = 'timeline-card' + (entryPinned ? ' pinned-card' : '');
     card.dataset.date = entry.date;
+
+    // v4: Pinned label
+    if (entryPinned) {
+      const pinnedLabel = document.createElement('div');
+      pinnedLabel.className = 'pinned-label';
+      pinnedLabel.innerHTML = '\u{1F4CC} Pinned';
+      card.appendChild(pinnedLabel);
+    }
+
     const ul = document.createElement('ul');
     ul.className = 'timeline-card-wins';
     entry.wins.forEach(w => {
@@ -1782,6 +2242,16 @@ function loadMoreTimeline() {
       ul.appendChild(li);
     });
     card.appendChild(ul);
+
+    // v4: Mood display
+    if (entry.mood) {
+      const moodSpan = document.createElement('span');
+      moodSpan.className = 'mood-inline';
+      moodSpan.textContent = entry.mood;
+      moodSpan.setAttribute('aria-label', 'Mood: ' + entry.mood);
+      ul.parentElement.insertBefore(moodSpan, ul.nextSibling);
+    }
+
     const footer = document.createElement('div');
     footer.className = 'timeline-card-footer';
     const tags = document.createElement('div');
@@ -1798,13 +2268,33 @@ function loadMoreTimeline() {
       tags.appendChild(badge);
     });
     footer.appendChild(tags);
+
+    const rightSection = document.createElement('div');
+    rightSection.style.cssText = 'display:flex;align-items:center;gap:4px';
+
     const time = document.createElement('span');
     time.className = 'timeline-card-time';
     if (entry.createdAt) {
       const d = new Date(entry.createdAt);
       time.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
     }
-    footer.appendChild(time);
+    rightSection.appendChild(time);
+
+    // v4: Pin button
+    const pinBtn = document.createElement('button');
+    pinBtn.className = 'pin-btn' + (entryPinned ? ' pinned' : '');
+    pinBtn.type = 'button';
+    pinBtn.setAttribute('aria-label', entryPinned ? 'Unpin' : 'Pin');
+    pinBtn.innerHTML = '\u{1F4CC}';
+    pinBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (togglePin(entry.id)) {
+        refreshTimeline();
+      }
+    });
+    rightSection.appendChild(pinBtn);
+
+    footer.appendChild(rightSection);
     card.appendChild(footer);
     list.appendChild(card);
   });
@@ -1900,7 +2390,30 @@ async function refreshInsights() {
   const weekReviewCard = buildWeeklyReview(entries);
   if (weekReviewCard) container.appendChild(weekReviewCard);
 
-  // 7. Best entry
+  // 7. Mood tracker insight (v4)
+  const moodEntries = filtered.filter(e => e.mood);
+  if (moodEntries.length > 0) {
+    const moodCounts = {};
+    moodEntries.forEach(e => { moodCounts[e.mood] = (moodCounts[e.mood] || 0) + 1; });
+    const sortedMoods = Object.entries(moodCounts).sort((a, b) => b[1] - a[1]);
+    const moodCard = document.createElement('div');
+    moodCard.className = 'insight-card';
+    let moodBars = sortedMoods.map(([emoji, count]) => {
+      const pct = Math.round(count / moodEntries.length * 100);
+      return `<div style="display:flex;align-items:center;gap:8px;margin:4px 0">
+        <span style="font-size:20px;min-width:28px">${emoji}</span>
+        <div style="flex:1;height:20px;background:var(--bg-tertiary);border-radius:10px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent-primary),var(--victory-amber));border-radius:10px;transition:width 0.4s"></div>
+        </div>
+        <span style="font-size:var(--font-small);color:var(--text-secondary);min-width:32px">${pct}%</span>
+      </div>`;
+    }).join('');
+    moodCard.innerHTML = `<h3>Mood Tracker</h3>${moodBars}
+      <div style="text-align:center;margin-top:8px;color:var(--text-secondary);font-size:var(--font-small)">Mostly ${sortedMoods[0][0]} this period</div>`;
+    container.appendChild(moodCard);
+  }
+
+  // 8. Best entry
   let bestWin = null;
   let bestDate = '';
   filtered.forEach(e => e.wins.forEach(w => {
@@ -2423,6 +2936,189 @@ function generatePDF(entries) {
 }
 
 // ═══════════════════════════════════════════
+// v4: Mood Tracker
+// ═══════════════════════════════════════════
+function renderMoodSelector() {
+  const row = document.getElementById('moodRow');
+  row.innerHTML = '';
+  MOODS.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'mood-btn';
+    btn.type = 'button';
+    btn.textContent = m.emoji;
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', selectedMood === m.emoji ? 'true' : 'false');
+    btn.setAttribute('aria-label', m.label);
+    btn.addEventListener('click', () => {
+      if (selectedMood === m.emoji) {
+        selectedMood = null;
+      } else {
+        selectedMood = m.emoji;
+      }
+      row.querySelectorAll('.mood-btn').forEach(b => {
+        b.setAttribute('aria-checked', b.textContent === selectedMood ? 'true' : 'false');
+      });
+    });
+    row.appendChild(btn);
+  });
+  updateMoodWeekStat();
+}
+
+async function updateMoodWeekStat() {
+  const stat = document.getElementById('moodWeekStat');
+  let entries;
+  try { entries = await db.getAll(); } catch { entries = []; }
+  const weekAgo = daysAgo(7);
+  const weekEntries = entries.filter(e => new Date(e.date + 'T00:00:00') >= weekAgo && e.mood);
+  if (weekEntries.length === 0) { stat.classList.remove('visible'); return; }
+  const moodCounts = {};
+  weekEntries.forEach(e => {
+    moodCounts[e.mood] = (moodCounts[e.mood] || 0) + 1;
+  });
+  const topMood = Object.entries(moodCounts).sort((a, b) => b[1] - a[1])[0];
+  if (topMood) {
+    stat.textContent = `This week: mostly ${topMood[0]}`;
+    stat.classList.add('visible');
+  } else {
+    stat.classList.remove('visible');
+  }
+}
+
+// ═══════════════════════════════════════════
+// v4: Pin Wins
+// ═══════════════════════════════════════════
+function getPinnedIds() {
+  try {
+    const v = localStorage.getItem('wl_pinned');
+    return v ? JSON.parse(v) : [];
+  } catch { return []; }
+}
+
+function savePinnedIds(ids) {
+  try { localStorage.setItem('wl_pinned', JSON.stringify(ids)); } catch {}
+}
+
+function togglePin(entryId) {
+  let pinned = getPinnedIds();
+  const idx = pinned.indexOf(entryId);
+  if (idx >= 0) {
+    pinned.splice(idx, 1);
+  } else {
+    if (pinned.length >= MAX_PINNED) {
+      showToast(`Max ${MAX_PINNED} pinned wins allowed`);
+      return false;
+    }
+    pinned.push(entryId);
+  }
+  savePinnedIds(pinned);
+  return true;
+}
+
+function isPinned(entryId) {
+  return getPinnedIds().includes(entryId);
+}
+
+// ═══════════════════════════════════════════
+// v4: Date Filter
+// ═══════════════════════════════════════════
+function renderDateFilterRow() {
+  const row = document.getElementById('dateFilterRow');
+  row.innerHTML = '';
+  const options = [
+    { id: 'all', label: 'Все время' },
+    { id: 'week', label: 'Эта неделя' },
+    { id: 'month', label: 'Этот месяц' },
+  ];
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'date-filter-pill';
+    btn.textContent = opt.label;
+    btn.setAttribute('aria-pressed', dateFilter === opt.id ? 'true' : 'false');
+    btn.addEventListener('click', () => { dateFilter = opt.id; refreshTimeline(); });
+    row.appendChild(btn);
+  });
+}
+
+function applyDateFilter(entries) {
+  if (dateFilter === 'all') return entries;
+  const now = new Date(); now.setHours(0, 0, 0, 0);
+  if (dateFilter === 'week') {
+    const cutoff = daysAgo(7);
+    return entries.filter(e => new Date(e.date + 'T00:00:00') >= cutoff);
+  }
+  if (dateFilter === 'month') {
+    const cutoff = daysAgo(30);
+    return entries.filter(e => new Date(e.date + 'T00:00:00') >= cutoff);
+  }
+  return entries;
+}
+
+// ═══════════════════════════════════════════
+// v4: Streak Achievements
+// ═══════════════════════════════════════════
+function getAchievedMilestones() {
+  try {
+    const v = localStorage.getItem('wl_milestones');
+    return v ? JSON.parse(v) : [];
+  } catch { return []; }
+}
+
+function saveAchievedMilestones(milestones) {
+  try { localStorage.setItem('wl_milestones', JSON.stringify(milestones)); } catch {}
+}
+
+function renderStreakTrophies(currentStreak) {
+  const container = document.getElementById('streakTrophies');
+  if (!container) return;
+  const achieved = getAchievedMilestones();
+  container.innerHTML = '';
+  STREAK_MILESTONE_META.forEach(m => {
+    const isAchieved = achieved.includes(m.days) || currentStreak >= m.days;
+    const trophy = document.createElement('span');
+    trophy.className = 'streak-trophy' + (isAchieved ? '' : ' locked');
+    trophy.textContent = m.emoji;
+    trophy.setAttribute('title', m.label + (isAchieved ? ' \u2714' : ''));
+    trophy.setAttribute('aria-label', m.label + (isAchieved ? ' achieved' : ' locked'));
+    container.appendChild(trophy);
+  });
+}
+
+function checkAndShowCongrats(streak) {
+  const achieved = getAchievedMilestones();
+  const milestone = STREAK_MILESTONES.find(m => m === streak && !achieved.includes(m));
+  if (!milestone) return;
+  achieved.push(milestone);
+  saveAchievedMilestones(achieved);
+  showCongratsOverlay(milestone);
+}
+
+function showCongratsOverlay(days) {
+  const overlay = document.getElementById('congratsOverlay');
+  const meta = STREAK_MILESTONE_META.find(m => m.days === days);
+  if (!meta) return;
+  let message;
+  if (days === 7) message = 'First week done! Keep going!';
+  else if (days === 14) message = 'Two weeks strong!';
+  else if (days === 21) message = 'Three weeks! Habit forming!';
+  else if (days === 30) message = 'A whole month of wins!';
+  else if (days === 60) message = 'Two months! Incredible!';
+  else if (days === 90) message = 'Three months! You are a legend!';
+  else message = `${days} days!`;
+
+  overlay.innerHTML = `
+    <div class="congrats-trophy">${meta.emoji}</div>
+    <div class="congrats-title">${days}-Day Streak!</div>
+    <div class="congrats-subtitle">${message}</div>
+    <button class="congrats-btn" id="congratsDismiss">Continue</button>
+  `;
+  overlay.hidden = false;
+  celebrateSparkle();
+  const dismiss = () => { overlay.hidden = true; };
+  document.getElementById('congratsDismiss').addEventListener('click', dismiss);
+  setTimeout(dismiss, 6000);
+}
+
+// ═══════════════════════════════════════════
 // Settings
 // ═══════════════════════════════════════════
 function openSettings() {
@@ -2474,6 +3170,7 @@ function initApp() {
   // Today
   buildWinFields();
   renderCategories();
+  renderMoodSelector();
   refreshToday();
 
   document.getElementById('addMoreBtn').addEventListener('click', () => {
