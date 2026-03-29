@@ -1,5 +1,13 @@
 # Changelog
 
+## v12.0 — Zoom, Sparkline & Sound (2026-03-29)
+- **Entry Word Count**: live word counter shown below win fields while typing; auto-hides when empty
+- **Mood Trend Sparkline**: small bar chart in the mood section showing mood distribution over the last 30 days with colored bars and legend; updates on save
+- **Save Sound**: soft ascending two-tone chime (C5-E5 + G5 shimmer) via Web Audio API plays on successful save
+- Service worker cache bumped to `winlog-v12.0`
+
+---
+
 ## v11.0 — Micro-polish (2026-03-29)
 - Onboarding: confetti burst on "Start Winning" CTA click (24 colored particles)
 - Save button: green success flash animation on save (`saveFlash` keyframe)

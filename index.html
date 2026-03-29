@@ -585,6 +585,46 @@ a { color: var(--text-link); text-decoration: none; }
 }
 .gratitude-input::placeholder { color: var(--text-muted); }
 
+/* v12: Word count indicator */
+.word-count-bar {
+  display: flex; justify-content: flex-end; align-items: center;
+  padding: 2px 4px 0; gap: 4px;
+  font-size: var(--font-caption); color: var(--text-muted);
+  transition: opacity var(--duration-fast);
+  opacity: 0; height: 0; overflow: hidden;
+  transition: opacity var(--duration-fast), height var(--duration-fast);
+}
+.word-count-bar.visible { opacity: 1; height: 18px; }
+.word-count-bar .wc-icon { font-size: 11px; }
+
+/* v12: Mood trend sparkline */
+.mood-sparkline-card {
+  background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); padding: var(--space-md);
+  margin-top: var(--space-sm);
+}
+.mood-sparkline-card h4 {
+  font-size: var(--font-small); font-weight: 600;
+  margin-bottom: var(--space-sm); color: var(--text-secondary);
+}
+.mood-sparkline-row {
+  display: flex; align-items: flex-end; gap: 3px; height: 40px;
+}
+.mood-sparkline-bar {
+  flex: 1; border-radius: 3px 3px 0 0;
+  min-width: 4px; transition: height var(--duration-normal) var(--ease-bounce);
+}
+.mood-sparkline-legend {
+  display: flex; gap: var(--space-sm); flex-wrap: wrap;
+  margin-top: var(--space-sm); font-size: var(--font-caption);
+}
+.mood-sparkline-legend-item {
+  display: flex; align-items: center; gap: 3px;
+}
+.mood-sparkline-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+
 /* Save button area */
 .save-area { text-align: center; }
 .save-area .btn-primary { max-width: 320px; margin: 0 auto; }
@@ -1498,6 +1538,7 @@ mark {
     </div>
     <div class="today-subtitle">Чем ты гордишься сегодня?</div>
     <div class="win-fields" id="winFields"></div>
+    <div class="word-count-bar" id="wordCountBar"><span class="wc-icon" aria-hidden="true">Aa</span> <span id="wordCountValue">0 words</span></div>
     <button class="add-more-btn" id="addMoreBtn" type="button">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Добавить ещё
@@ -3897,6 +3938,13 @@ function initApp() {
   var gratInput = document.getElementById('gratitudeInput');
   if (gratInput) { gratInput.addEventListener('input', function() { autoResize(gratInput); }); }
 
+  // v12: Mood sparkline + word count init
+  renderMoodSparkline();
+  // Attach word count listeners to initial fields
+  document.querySelectorAll('#winFields .win-input').forEach(input => {
+    input.addEventListener('input', updateWordCount);
+  });
+
   document.getElementById('addMoreBtn').addEventListener('click', () => {
     const container = document.getElementById('winFields');
     if (container.children.length < 10) {
@@ -4169,6 +4217,123 @@ const _origSaveEntry = saveEntry;
 saveEntry = async function() {
   await _origSaveEntry();
   clearDraft();
+};
+
+// ═══════════════════════════════════════════
+// v12: Entry Word Count
+// ═══════════════════════════════════════════
+function updateWordCount() {
+  const inputs = document.querySelectorAll('#winFields .win-input');
+  let total = 0;
+  inputs.forEach(i => {
+    const text = i.value.trim();
+    if (text.length > 0) total += text.split(/\s+/).length;
+  });
+  const bar = document.getElementById('wordCountBar');
+  const val = document.getElementById('wordCountValue');
+  if (bar && val) {
+    val.textContent = total + (total === 1 ? ' word' : ' words');
+    bar.classList.toggle('visible', total > 0);
+  }
+}
+// Patch addWinField to attach word count listener
+const _origAddWinFieldV12 = addWinField;
+addWinField = function(container, idx) {
+  _origAddWinFieldV12(container, idx);
+  const input = container.lastElementChild.querySelector('.win-input');
+  if (input) input.addEventListener('input', updateWordCount);
+};
+
+// ═══════════════════════════════════════════
+// v12: Mood Trend Sparkline (last 30 days)
+// ═══════════════════════════════════════════
+const MOOD_EMOJIS_LIST = ['\u{1F929}', '\u{1F60A}', '\u{1F610}', '\u{1F614}', '\u{1F622}'];
+const MOOD_COLORS = { '\u{1F929}': '#F59E0B', '\u{1F60A}': '#48C763', '\u{1F610}': '#8B949E', '\u{1F614}': '#E88A3E', '\u{1F622}': '#6B8ADB' };
+
+async function renderMoodSparkline() {
+  const existing = document.getElementById('moodSparklineCard');
+  if (existing) existing.remove();
+
+  let entries;
+  try { entries = await db.getAll(); } catch { entries = []; }
+
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+  const recent = entries.filter(e => e.mood && new Date(e.date + 'T00:00:00') >= cutoff);
+  if (recent.length < 2) return;
+
+  const counts = {};
+  recent.forEach(e => { counts[e.mood] = (counts[e.mood] || 0) + 1; });
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const maxCount = sorted[0][1];
+
+  let barsHtml = sorted.map(([emoji, count]) => {
+    const h = Math.max(6, Math.round((count / maxCount) * 36));
+    const color = MOOD_COLORS[emoji] || 'var(--accent-primary)';
+    return '<div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:2px">' +
+      '<div class="mood-sparkline-bar" style="height:' + h + 'px;background:' + color + ';width:100%"></div>' +
+      '<span style="font-size:14px">' + emoji + '</span></div>';
+  }).join('');
+
+  let legendHtml = sorted.map(([emoji, count]) => {
+    const color = MOOD_COLORS[emoji] || 'var(--accent-primary)';
+    return '<span class="mood-sparkline-legend-item"><span class="mood-sparkline-legend-dot" style="background:' + color + '"></span>' + emoji + ' ' + count + '</span>';
+  }).join('');
+
+  const card = document.createElement('div');
+  card.className = 'mood-sparkline-card';
+  card.id = 'moodSparklineCard';
+  card.innerHTML = '<h4>Mood Trend (30 days)</h4><div class="mood-sparkline-row">' + barsHtml + '</div><div class="mood-sparkline-legend">' + legendHtml + '</div>';
+
+  const moodSection = document.querySelector('.mood-section');
+  if (moodSection) moodSection.appendChild(card);
+}
+
+// ═══════════════════════════════════════════
+// v12: Save Sound (soft chime via Web Audio)
+// ═══════════════════════════════════════════
+let _wlAudioCtx = null;
+function playSaveChime() {
+  try {
+    if (!_wlAudioCtx) _wlAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = _wlAudioCtx;
+    const now = ctx.currentTime;
+    // Two-tone ascending chime
+    const notes = [523.25, 659.25]; // C5, E5
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + i * 0.1);
+      gain.gain.setValueAtTime(0.15, now + i * 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + i * 0.1);
+      osc.stop(now + i * 0.1 + 0.3);
+    });
+    // Soft harmonic shimmer
+    const osc3 = ctx.createOscillator();
+    const gain3 = ctx.createGain();
+    osc3.type = 'triangle';
+    osc3.frequency.setValueAtTime(783.99, now + 0.15); // G5
+    gain3.gain.setValueAtTime(0.06, now + 0.15);
+    gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc3.connect(gain3);
+    gain3.connect(ctx.destination);
+    osc3.start(now + 0.15);
+    osc3.stop(now + 0.5);
+  } catch(e) {}
+}
+
+// Patch saveEntry to play chime and update sparkline
+const _origSaveEntryV12 = saveEntry;
+saveEntry = async function() {
+  await _origSaveEntryV12();
+  playSaveChime();
+  updateWordCount();
+  renderMoodSparkline();
 };
 
 // ═══════════════════════════════════════════
