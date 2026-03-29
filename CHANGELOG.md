@@ -1,5 +1,11 @@
 # Changelog
 
+## v7.0 — PWA Install, Keyboard Shortcut & Auto-save Draft (2026-03-29)
+- **PWA Install Prompt**: `beforeinstallprompt` banner shown after 2+ visits, with Install/Dismiss buttons. Dismissed state persisted in localStorage
+- **Keyboard Shortcut**: Ctrl+Enter (or Cmd+Enter on Mac) saves the current win entry
+- **Auto-save Draft**: Win textarea content auto-saved to localStorage on every keystroke (`wl_draft`). Draft restored on page load, cleared on successful save
+- Service worker cache bumped to `winlog-v7.0`
+
 ## v6.0 — Animations & Focus Polish (2026-03-29)
 - **Win Save Animation**: Pulse glow on today-existing card + styled "Win recorded!" toast on every save
 - **Streak Counter CountUp**: Streak number animates from 0 to current value over 0.8s (easeOutCubic) on first load

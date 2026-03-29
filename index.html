@@ -1308,6 +1308,53 @@ mark {
   font-weight: 600; font-size: var(--font-body);
   box-shadow: var(--shadow-glow);
 }
+/* v7: PWA install banner */
+.pwa-install-banner {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-elevated);
+  z-index: 200;
+  align-items: center;
+  gap: 14px;
+  max-width: 400px;
+  width: calc(100% - 32px);
+  animation: pwaSlideUp 0.3s ease-out;
+}
+.pwa-install-banner.visible { display: flex; }
+.pwa-install-banner-text { flex: 1; font-size: var(--font-small); color: var(--text-primary); }
+.pwa-install-banner-text small { display: block; color: var(--text-secondary); font-size: var(--font-caption); margin-top: 2px; }
+.pwa-install-btn {
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pwa-install-btn:hover { background: var(--accent-hover); }
+.pwa-install-dismiss {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+@keyframes pwaSlideUp {
+  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
 .oc-footer{text-align:center;padding:20px 16px 24px;margin-top:24px}
 .oc-footer a{font-size:.78rem;color:var(--text-muted,var(--text-secondary,#888));text-decoration:none;opacity:.6;transition:opacity .2s}
 .oc-footer a:hover{opacity:1}
@@ -3900,6 +3947,111 @@ function scheduleReminder() {
 }
 
 // ═══════════════════════════════════════════
+// v7: PWA Install Prompt (after 2+ visits)
+// ═══════════════════════════════════════════
+(function() {
+  const VISIT_KEY = 'wl_visit_count';
+  const DISMISS_KEY = 'wl_pwa_dismissed';
+  let visits = 1;
+  try {
+    visits = parseInt(localStorage.getItem(VISIT_KEY) || '0', 10) + 1;
+    localStorage.setItem(VISIT_KEY, String(visits));
+  } catch(e) {}
+
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    let dismissed = false;
+    try { dismissed = localStorage.getItem(DISMISS_KEY) === '1'; } catch(e) {}
+    if (visits >= 2 && !dismissed) {
+      document.getElementById('pwaInstallBanner').classList.add('visible');
+    }
+  });
+
+  document.getElementById('pwaInstallBtn').addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+    }
+    document.getElementById('pwaInstallBanner').classList.remove('visible');
+  });
+
+  document.getElementById('pwaInstallDismiss').addEventListener('click', () => {
+    document.getElementById('pwaInstallBanner').classList.remove('visible');
+    try { localStorage.setItem(DISMISS_KEY, '1'); } catch(e) {}
+  });
+})();
+
+// ═══════════════════════════════════════════
+// v7: Keyboard Shortcut — Ctrl+Enter = save
+// ═══════════════════════════════════════════
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    const saveBtn = document.getElementById('saveBtn');
+    if (saveBtn && !saveBtn.disabled) {
+      e.preventDefault();
+      saveBtn.click();
+    }
+  }
+});
+
+// ═══════════════════════════════════════════
+// v7: Auto-save Draft
+// ═══════════════════════════════════════════
+const DRAFT_KEY = 'wl_draft';
+
+function saveDraft() {
+  try {
+    const inputs = document.querySelectorAll('#winFields .win-input');
+    const texts = Array.from(inputs).map(i => i.value);
+    if (texts.some(t => t.length > 0)) {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(texts));
+    } else {
+      localStorage.removeItem(DRAFT_KEY);
+    }
+  } catch(e) {}
+}
+
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const texts = JSON.parse(raw);
+    if (!Array.isArray(texts)) return;
+    const inputs = document.querySelectorAll('#winFields .win-input');
+    texts.forEach((text, i) => {
+      if (inputs[i] && text) {
+        inputs[i].value = text;
+        autoResize(inputs[i]);
+      }
+    });
+    updateSaveBtn();
+  } catch(e) {}
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
+}
+
+// Patch addWinField to also listen for draft saves on input
+const _origAddWinField = addWinField;
+addWinField = function(container, idx) {
+  _origAddWinField(container, idx);
+  const input = container.lastElementChild.querySelector('.win-input');
+  if (input) {
+    input.addEventListener('input', saveDraft);
+  }
+};
+
+// Patch saveEntry to clear draft after save
+const _origSaveEntry = saveEntry;
+saveEntry = async function() {
+  await _origSaveEntry();
+  clearDraft();
+};
+
+// ═══════════════════════════════════════════
 // Boot
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
@@ -3907,6 +4059,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initOnboarding();
   if (Settings.get('onboardingDone')) {
     initApp();
+    // v7: Restore draft after fields are built
+    restoreDraft();
+    // v7: Attach draft save listeners to existing fields
+    document.querySelectorAll('#winFields .win-input').forEach(input => {
+      input.addEventListener('input', saveDraft);
+    });
     setupReminder();
   }
 });
@@ -3919,6 +4077,12 @@ document.addEventListener('click', (e) => {
   }
 });
 </script>
+<!-- v7: PWA install banner -->
+<div class="pwa-install-banner" id="pwaInstallBanner">
+  <div class="pwa-install-banner-text">Install WinLog<small>Quick access from your home screen</small></div>
+  <button class="pwa-install-btn" id="pwaInstallBtn">Install</button>
+  <button class="pwa-install-dismiss" id="pwaInstallDismiss" aria-label="Dismiss">&times;</button>
+</div>
 <div class="oc-footer"><a href="https://magic-dev-kz.github.io/openclaw/" target="_blank" rel="noopener">More free tools → OpenClaw</a></div>
 </body>
 </html>
