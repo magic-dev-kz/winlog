@@ -1,4 +1,4 @@
-const CACHE_NAME = 'winlog-v13.0';
+const CACHE_NAME = 'winlog-v14.0';
 const ASSETS = [
   './',
   './index.html'

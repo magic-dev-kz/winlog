@@ -2314,6 +2314,34 @@ async function refreshTodayExisting() {
   });
 }
 
+// v14: Streak freeze helpers
+function getStreakFreezes() {
+  try {
+    const data = JSON.parse(localStorage.getItem('wl_streak_freezes') || '{}');
+    return data;
+  } catch { return {}; }
+}
+function saveStreakFreezes(data) {
+  try { localStorage.setItem('wl_streak_freezes', JSON.stringify(data)); } catch {}
+}
+function canUseFreeze() {
+  const data = getStreakFreezes();
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  return !data[monthKey];
+}
+function useStreakFreeze(dateStr) {
+  const data = getStreakFreezes();
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  data[monthKey] = dateStr;
+  saveStreakFreezes(data);
+}
+function isDateFrozen(dateStr) {
+  const data = getStreakFreezes();
+  return Object.values(data).includes(dateStr);
+}
+
 async function calculateStreak() {
   let entries;
   try { entries = await db.getAll(); } catch { return 0; }
@@ -2326,7 +2354,7 @@ async function calculateStreak() {
     d.setDate(d.getDate() - 1);
     if (!datesSet.has(dateKey(d))) return 0;
   }
-  while (datesSet.has(dateKey(d))) {
+  while (datesSet.has(dateKey(d)) || isDateFrozen(dateKey(d))) {
     streak++;
     d.setDate(d.getDate() - 1);
   }
@@ -2372,8 +2400,41 @@ async function checkStreak() {
   } else {
     badge.hidden = true;
   }
+  // v14: Streak freeze button
+  renderFreezeButton(streak);
   // v4: Render trophy badges
   renderStreakTrophies(streak);
+}
+
+function renderFreezeButton(streak) {
+  let btn = document.getElementById('streakFreezeBtn');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.id = 'streakFreezeBtn';
+    btn.style.cssText = 'background:none;border:1px solid var(--streak-flame,#FF9F1C);color:var(--streak-flame,#FF9F1C);font-size:11px;padding:3px 8px;border-radius:12px;cursor:pointer;margin-left:6px;vertical-align:middle;';
+    btn.title = 'Use your monthly streak freeze (1 per month)';
+    const badge = document.getElementById('streakBadge');
+    if (badge && badge.parentNode) badge.parentNode.insertBefore(btn, badge.nextSibling);
+  }
+  if (streak > 0 && canUseFreeze()) {
+    btn.hidden = false;
+    btn.textContent = '\u2744\uFE0F Freeze';
+    btn.onclick = function() {
+      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+      const yk = dateKey(yesterday);
+      useStreakFreeze(yk);
+      btn.textContent = '\u2744\uFE0F Used';
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+    };
+  } else if (!canUseFreeze()) {
+    btn.hidden = false;
+    btn.textContent = '\u2744\uFE0F Used';
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+  } else {
+    btn.hidden = true;
+  }
 }
 
 function refreshToday() {

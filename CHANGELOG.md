@@ -1,5 +1,18 @@
 # Changelog
 
+## v14.0 — Win Streak Freeze (2026-03-29)
+
+**Win Streak Freeze**
+- 1 streak freeze per month for streak protection
+- Snowflake button appears next to the streak badge when a freeze is available
+- Using a freeze marks the previous day as "frozen" so the streak doesn't break
+- `calculateStreak` now treats frozen dates as valid streak days
+- Freeze state persisted in localStorage (`wl_streak_freezes`) keyed by year-month
+- Button shows "Used" state when monthly freeze is spent
+- Service worker cache bumped to `winlog-v14.0`
+
+---
+
 ## v13.0 — Monthly Highlights (2026-03-29)
 - **Monthly Highlights card** in Insights: "Best Day: March 15 (5 wins)", "Most Active Category: Work (42%)", "Longest Streak: 12 days"
 - Three highlight rows with icons (trophy, chart, fire) on accent background
