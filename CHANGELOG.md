@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.0 — Animations & Focus Polish (2026-03-29)
+- **Win Save Animation**: Pulse glow on today-existing card + styled "Win recorded!" toast on every save
+- **Streak Counter CountUp**: Streak number animates from 0 to current value over 0.8s (easeOutCubic) on first load
+- **Focus-Visible**: Comprehensive `:focus-visible` styles for all interactive elements (pills, pin buttons, delete buttons, mic buttons, mood buttons, filter pills, settings gear, period switcher, streak trophies, links, selects)
+- **Timeline Card Stagger**: Cards in timeline appear with dynamic staggered delays (50ms per card) instead of fixed nth-child rules, supporting any number of cards
+- **SW**: Cache version bumped to v6.0
+
 ## v5.0 — Daily Prompt, Growth Chart & Share Card (2026-03-29)
 - **Daily Prompt**: Inspirational question of the day shown on the Today screen (32 prompts, rotated by day of year). Encourages reflection: "What are you proud of today?", "What obstacle did you overcome?", etc.
 - **Growth Chart**: SVG line chart in Insights showing win counts per week over the last 8 weeks. Includes area gradient fill, per-point labels, and summary stats (total wins, this week, trend vs last week)

@@ -176,6 +176,22 @@ a { color: var(--text-link); text-decoration: none; }
   0%, 100% { box-shadow: 0 0 12px rgba(232,168,23,0.15); }
   50% { box-shadow: 0 0 24px rgba(232,168,23,0.3); }
 }
+/* v6: Win save pulse glow on today-existing card */
+@keyframes winSaveGlow {
+  0% { box-shadow: 0 0 0 0 rgba(232,168,23,0.5); }
+  50% { box-shadow: 0 0 24px 8px rgba(232,168,23,0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(232,168,23,0); }
+}
+.win-save-glow {
+  animation: winSaveGlow 0.6s ease-out;
+}
+/* v6: Streak countUp uses CSS for smooth transition — handled in JS */
+/* v6: Toast styles */
+.toast-win {
+  background: linear-gradient(135deg, var(--accent-light), color-mix(in srgb, var(--accent-primary) 20%, var(--accent-light))) !important;
+  border: 1px solid var(--accent-primary) !important;
+  font-weight: 600 !important;
+}
 
 /* ═══════════════════════════════════════════
    LAYOUT
@@ -609,12 +625,7 @@ a { color: var(--text-link); text-decoration: none; }
   box-shadow: var(--shadow-card-hover);
   transform: translateY(-2px);
 }
-.timeline-card:nth-child(1) { animation-delay: 0ms; }
-.timeline-card:nth-child(2) { animation-delay: 60ms; }
-.timeline-card:nth-child(3) { animation-delay: 120ms; }
-.timeline-card:nth-child(4) { animation-delay: 180ms; }
-.timeline-card:nth-child(5) { animation-delay: 240ms; }
-.timeline-card:nth-child(n+6) { animation-delay: 300ms; }
+/* v6: Stagger delays now set dynamically in JS (50ms each) */
 .timeline-card-wins { list-style: none; }
 .timeline-card-wins li { padding: 4px 0; line-height: var(--lh-normal); }
 .timeline-card-wins li::before { content: '\2014\00a0'; color: var(--text-muted); }
@@ -836,17 +847,22 @@ mark { background: var(--accent-light); color: var(--text-primary); border-radiu
 }
 .heatmap-tooltip.visible { opacity: 1; }
 
-/* Focus-visible styles */
+/* Focus-visible styles — v6: comprehensive for all interactive elements */
 :focus-visible {
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
-button:focus-visible, .tab-btn:focus-visible {
+button:focus-visible, .tab-btn:focus-visible, .cat-pill:focus-visible,
+.mood-btn:focus-visible, .filter-pill:focus-visible, .pin-btn:focus-visible,
+.delete-win-btn:focus-visible, .mic-btn:focus-visible, .settings-btn:focus-visible,
+a:focus-visible, select:focus-visible, [role="button"]:focus-visible,
+.period-btn:focus-visible, .streak-trophy:focus-visible {
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
 }
-.win-input:focus-visible, .settings-input:focus-visible, .onb-input:focus-visible {
+.win-input:focus-visible, .settings-input:focus-visible, .onb-input:focus-visible,
+textarea:focus-visible, .search-box input:focus-visible {
   outline: none; /* they use border-color + box-shadow instead */
 }
 
@@ -1578,6 +1594,29 @@ function showToast(msg, duration = 3000) {
   }, duration);
 }
 
+// v6: Styled toast for win saves
+function showWinToast(msg, duration = 2500) {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;pointer-events:none;';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = 'toast-win';
+  toast.style.cssText = 'color:var(--text-primary);padding:10px 20px;border-radius:var(--radius-md);box-shadow:var(--shadow-elevated);font-size:var(--font-small);pointer-events:auto;opacity:0;transform:translateY(-8px);transition:opacity 0.25s,transform 0.25s;';
+  toast.textContent = msg;
+  toast.setAttribute('role', 'alert');
+  container.appendChild(toast);
+  requestAnimationFrame(() => { toast.style.opacity = '1'; toast.style.transform = 'translateY(0)'; });
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-8px)';
+    setTimeout(() => toast.remove(), 250);
+  }, duration);
+}
+
 // ── Focus trap utility ──
 function trapFocus(element) {
   const focusable = element.querySelectorAll('button:not([hidden]):not([disabled]), input:not([hidden]):not([disabled]), textarea:not([hidden]):not([disabled]), [tabindex]:not([tabindex="-1"]):not([hidden])');
@@ -1994,7 +2033,16 @@ async function saveEntry() {
   renderCategories();
   renderMoodSelector();
   updateSaveBtn();
-  refreshTodayExisting();
+  await refreshTodayExisting();
+  // v6: Pulse glow on today-existing card + toast
+  const todayCard = document.getElementById('todayExisting');
+  if (todayCard && !todayCard.hidden) {
+    todayCard.classList.remove('win-save-glow');
+    void todayCard.offsetWidth; // force reflow for re-trigger
+    todayCard.classList.add('win-save-glow');
+    todayCard.addEventListener('animationend', () => todayCard.classList.remove('win-save-glow'), { once: true });
+  }
+  showWinToast('Win recorded!');
 }
 
 // Auto-categorization by keywords
@@ -2099,13 +2147,35 @@ async function calculateStreak() {
   return streak;
 }
 
+// v6: Animate streak number from 0 to target over 0.8s
+function animateCountUp(el, target) {
+  const duration = 800;
+  const start = performance.now();
+  const from = 0;
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // easeOutCubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (target - from) * eased);
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
 async function checkStreak() {
   const streak = await calculateStreak();
   const badge = document.getElementById('streakBadge');
   const countEl = document.getElementById('streakCount');
   if (streak > 0) {
     badge.hidden = false;
-    countEl.textContent = streak;
+    // v6: countUp animation on first render, direct set otherwise
+    const prev = parseInt(countEl.textContent, 10);
+    if (isNaN(prev) || prev === 0 || countEl.textContent === '') {
+      animateCountUp(countEl, streak);
+    } else {
+      countEl.textContent = streak;
+    }
     badge.setAttribute('aria-label', `Серия: ${streak} дней подряд`);
     // v4: Check milestone achievements
     checkAndShowCongrats(streak);
@@ -2344,6 +2414,7 @@ function loadMoreTimeline() {
   const yesterday = dateKey(daysAgo(1));
 
   const pinnedIds = getPinnedIds();
+  let cardIndex = 0; // v6: stagger counter
   toShow.forEach(entry => {
     const entryPinned = pinnedIds.includes(entry.id);
     if (entry.date !== lastDate) {
@@ -2437,6 +2508,9 @@ function loadMoreTimeline() {
 
     footer.appendChild(rightSection);
     card.appendChild(footer);
+    // v6: staggered animation delay (50ms per card)
+    card.style.animationDelay = (cardIndex * 50) + 'ms';
+    cardIndex++;
     list.appendChild(card);
   });
 
