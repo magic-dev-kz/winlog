@@ -421,7 +421,7 @@ a { color: var(--text-link); text-decoration: none; }
   transform: translateX(-100%) skewX(-15deg);
   transition: none;
 }
-.btn-primary:hover { background-position: 100% 100%; box-shadow: 0 0 28px rgba(232,168,23,0.4), 0 0 56px rgba(232,168,23,0.18); }
+.btn-primary:hover { background-position: 100% 100%; box-shadow: 0 0 32px rgba(232,168,23,0.5), 0 0 64px rgba(232,168,23,0.25); }
 .btn-primary:hover::before { animation: shimmer 0.8s ease forwards; }
 .btn-primary:active { transform: scale(0.96); transition-duration: 80ms; }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
@@ -1491,7 +1491,7 @@ mark {
       <div class="gratitude-label">За что ты благодарен(а)? (опционально)</div>
       <div class="gratitude-field">
         <span class="gratitude-icon" aria-hidden="true">&#10084;&#65039;</span>
-        <textarea id="gratitudeInput" class="gratitude-input" rows="1" maxlength="200" placeholder="I'm grateful for..." aria-label="What are you grateful for?"></textarea>
+        <textarea id="gratitudeInput" class="gratitude-input" rows="1" maxlength="200" placeholder="What are you grateful for today?" aria-label="What are you grateful for?"></textarea>
       </div>
     </div>
     <div class="mood-section">

@@ -1,5 +1,12 @@
 # Changelog
 
+## v10.0 — Micro-polish (2026-03-29)
+- Gratitude field placeholder updated to "What are you grateful for today?"
+- Save button hover glow stronger for better visual feedback
+- Service worker cache bumped to `winlog-v10.0`
+
+---
+
 ## v9.0 — Share on X & Search Highlight (2026-03-29)
 - **Share on X**: Button below Share Achievement Card. Pre-filled tweet: "X wins recorded this month. Track yours: [URL]"
 - **Timeline Search Highlight**: Search matches highlighted with yellow `<mark>` tags (confirmed existing since v3)
