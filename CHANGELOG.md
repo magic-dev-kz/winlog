@@ -1,5 +1,10 @@
 # Changelog
 
+## v9.0 — Share on X & Search Highlight (2026-03-29)
+- **Share on X**: Button below Share Achievement Card. Pre-filled tweet: "X wins recorded this month. Track yours: [URL]"
+- **Timeline Search Highlight**: Search matches highlighted with yellow `<mark>` tags (confirmed existing since v3)
+- Service worker cache bumped to `winlog-v9.0`
+
 ## v8.0 — Gratitude Prompt, Category Pie Chart & Dark Mode (2026-03-29)
 - **Gratitude Prompt**: Optional "What are you grateful for?" textarea on the Today screen, between categories and mood. Saved with entry data (`gratitude` field), displayed on timeline cards and today's existing entries with a heart icon
 - **Win Categories Stats**: Pie chart in Insights showing distribution of wins across categories with SVG donut chart and legend (already present since v3, confirmed working)

@@ -1539,6 +1539,9 @@ mark {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         Share Achievement Card
       </button>
+      <button class="share-card-btn" id="shareXBtn" style="margin-top:8px;background:var(--bg-elevated);border:1px solid var(--border-subtle);color:var(--text-primary)">
+        Share on X
+      </button>
     </div>
     <div class="export-section">
       <div class="export-btns-row">
@@ -3953,6 +3956,15 @@ function initApp() {
   document.getElementById('shareClose').addEventListener('click', closeShareModal);
   document.getElementById('shareDownload').addEventListener('click', downloadShareCard);
   document.getElementById('shareNative').addEventListener('click', shareNative);
+  document.getElementById('shareXBtn').addEventListener('click', async () => {
+    let entries;
+    try { entries = await db.getAll(); } catch { entries = []; }
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthWins = entries.filter(e => new Date(e.date + 'T00:00:00') >= monthStart).reduce((s, e) => s + e.wins.length, 0);
+    const text = monthWins + ' wins recorded this month \uD83D\uDCD3 Track yours: https://magic-dev-kz.github.io/winlog/';
+    window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(text), '_blank', 'noopener');
+  });
   document.getElementById('shareModal').addEventListener('click', (e) => {
     if (e.target === document.getElementById('shareModal')) closeShareModal();
   });
