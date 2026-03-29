@@ -917,6 +917,10 @@ button:focus-visible, .tab-btn:focus-visible {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Export as Text
         </button>
+        <button class="btn-secondary" id="copyAllTextBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy All
+        </button>
         <button class="btn-secondary" id="exportBtn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Экспортировать
@@ -2280,6 +2284,55 @@ async function exportAllWinsAsText() {
   showToast('Exported!');
 }
 
+async function copyAllWinsToClipboard() {
+  let entries;
+  try { entries = await db.getAll(); } catch { entries = []; }
+  if (entries.length === 0) { showToast('No wins to copy'); return; }
+  entries.sort((a, b) => b.date.localeCompare(a.date));
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const now = new Date();
+  let text = `WinLog Export \u2014 ${months[now.getMonth()]} ${now.getFullYear()}\n\n`;
+  let lastDate = '';
+  entries.forEach(e => {
+    if (e.date !== lastDate) {
+      const d = new Date(e.date + 'T00:00:00');
+      text += `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}\n`;
+      lastDate = e.date;
+    }
+    e.wins.forEach(w => { text += `\u2022 ${w.text}\n`; });
+    text += '\n';
+  });
+  text = text.trimEnd() + '\n';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast('Copied to clipboard!');
+    } catch {
+      // Fallback: textarea + execCommand
+      copyViaTextarea(text);
+    }
+  } else {
+    copyViaTextarea(text);
+  }
+}
+
+function copyViaTextarea(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('Copied to clipboard!');
+  } catch {
+    showToast('Copy failed — use Export instead');
+  }
+  document.body.removeChild(ta);
+}
+
 // ═══════════════════════════════════════════
 // PDF Generator (M-2) — minimal PDF from scratch
 // ═══════════════════════════════════════════
@@ -2491,6 +2544,7 @@ function initApp() {
 
   // Export
   document.getElementById('exportAllTextBtn').addEventListener('click', exportAllWinsAsText);
+  document.getElementById('copyAllTextBtn').addEventListener('click', copyAllWinsToClipboard);
   document.getElementById('exportBtn').addEventListener('click', () => {
     modalTrigger = document.activeElement;
     document.getElementById('exportModal').hidden = false;
