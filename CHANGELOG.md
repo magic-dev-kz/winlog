@@ -1,5 +1,12 @@
 # Changelog
 
+## v11.0 — Micro-polish (2026-03-29)
+- Onboarding: confetti burst on "Start Winning" CTA click (24 colored particles)
+- Save button: green success flash animation on save (`saveFlash` keyframe)
+- Service worker cache bumped to `winlog-v11.0`
+
+---
+
 ## v10.0 — Micro-polish (2026-03-29)
 - Gratitude field placeholder updated to "What are you grateful for today?"
 - Save button hover glow stronger for better visual feedback
