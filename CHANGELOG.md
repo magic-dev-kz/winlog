@@ -1,5 +1,11 @@
 # Changelog
 
+## v8.0 — Gratitude Prompt, Category Pie Chart & Dark Mode (2026-03-29)
+- **Gratitude Prompt**: Optional "What are you grateful for?" textarea on the Today screen, between categories and mood. Saved with entry data (`gratitude` field), displayed on timeline cards and today's existing entries with a heart icon
+- **Win Categories Stats**: Pie chart in Insights showing distribution of wins across categories with SVG donut chart and legend (already present since v3, confirmed working)
+- **Dark Mode Toggle**: Three-way theme switcher (Warm / Light / Dark) in Settings panel with `data-theme` attribute and full CSS custom property overrides (already present since v3, confirmed working)
+- Service worker cache bumped to `winlog-v8.0`
+
 ## v7.0 — PWA Install, Keyboard Shortcut & Auto-save Draft (2026-03-29)
 - **PWA Install Prompt**: `beforeinstallprompt` banner shown after 2+ visits, with Install/Dismiss buttons. Dismissed state persisted in localStorage
 - **Keyboard Shortcut**: Ctrl+Enter (or Cmd+Enter on Mac) saves the current win entry

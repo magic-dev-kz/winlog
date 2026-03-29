@@ -552,6 +552,28 @@ a { color: var(--text-link); text-decoration: none; }
 .cat-pill[data-cat="other"] { border-color: var(--tag-other); color: var(--tag-other); }
 .cat-pill[data-cat="other"][aria-checked="true"] { background: var(--tag-other-bg); }
 
+/* v8: Gratitude Prompt */
+.gratitude-section { margin-bottom: var(--space-lg); }
+.gratitude-label {
+  font-size: var(--font-small); color: var(--text-secondary); margin-bottom: var(--space-sm);
+}
+.gratitude-field {
+  display: flex; align-items: flex-start; gap: var(--space-sm);
+  background: var(--bg-secondary); border: 1px solid var(--border-input);
+  border-radius: var(--radius-md); padding: 12px 16px;
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.gratitude-field:hover { border-color: color-mix(in srgb, var(--border-focus) 50%, var(--border-input)); }
+.gratitude-field:focus-within { border-color: var(--border-focus); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 18%, transparent), var(--shadow-glow); }
+.gratitude-icon { font-size: 18px; padding-top: 2px; flex-shrink: 0; }
+.gratitude-input {
+  flex: 1; border: none; background: transparent; outline: none;
+  resize: none; min-height: 24px; max-height: 80px;
+  line-height: var(--lh-relaxed); overflow-y: auto;
+  font-family: inherit; font-size: inherit; color: var(--text-primary);
+}
+.gratitude-input::placeholder { color: var(--text-muted); }
+
 /* Save button area */
 .save-area { text-align: center; }
 .save-area .btn-primary { max-width: 320px; margin: 0 auto; }
@@ -636,6 +658,11 @@ a { color: var(--text-link); text-decoration: none; }
 }
 .timeline-card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
 .timeline-card-time { font-size: var(--font-caption); color: var(--text-muted); }
+/* v8: Gratitude inline display on timeline cards */
+.gratitude-inline {
+  font-size: var(--font-small); color: var(--text-secondary);
+  font-style: italic; padding: 6px 0 2px; line-height: var(--lh-normal);
+}
 .load-more-btn {
   width: 100%; padding: var(--space-md); text-align: center;
   color: var(--text-secondary); font-weight: 500;
@@ -1459,6 +1486,14 @@ mark {
       <div class="categories-label">Категории:</div>
       <div class="categories-row" id="categoriesRow" role="group" aria-label="Категории"></div>
     </div>
+    <!-- v8: Gratitude Prompt -->
+    <div class="gratitude-section" id="gratitudeSection">
+      <div class="gratitude-label">За что ты благодарен(а)? (опционально)</div>
+      <div class="gratitude-field">
+        <span class="gratitude-icon" aria-hidden="true">&#10084;&#65039;</span>
+        <textarea id="gratitudeInput" class="gratitude-input" rows="1" maxlength="200" placeholder="I'm grateful for..." aria-label="What are you grateful for?"></textarea>
+      </div>
+    </div>
     <div class="mood-section">
       <div class="mood-label">Настроение (опционально):</div>
       <div class="mood-row" id="moodRow" role="radiogroup" aria-label="Настроение"></div>
@@ -2064,6 +2099,11 @@ async function saveEntry() {
   const today = dateKey(new Date());
   const entry = { date: today, wins, createdAt: new Date().toISOString() };
   if (selectedMood) entry.mood = selectedMood;
+  // v8: Gratitude prompt
+  var gratitudeInput = document.getElementById('gratitudeInput');
+  if (gratitudeInput && gratitudeInput.value.trim()) {
+    entry.gratitude = gratitudeInput.value.trim().substring(0, 200);
+  }
   try {
     await db.addEntry(entry);
   } catch (e) {
@@ -2077,6 +2117,8 @@ async function saveEntry() {
   document.querySelectorAll('#winFields .win-input').forEach(i => { i.value = ''; autoResize(i); });
   selectedCategories.clear();
   selectedMood = null;
+  // v8: Clear gratitude field
+  if (gratitudeInput) { gratitudeInput.value = ''; autoResize(gratitudeInput); }
   renderCategories();
   renderMoodSelector();
   updateSaveBtn();
@@ -2172,6 +2214,14 @@ async function refreshTodayExisting() {
       div.appendChild(delBtn);
       container.appendChild(div);
     });
+    // v8: Show gratitude for this entry
+    if (entry.gratitude) {
+      const gratDiv = document.createElement('div');
+      gratDiv.className = 'gratitude-inline';
+      gratDiv.textContent = '\u2764\uFE0F ' + entry.gratitude;
+      gratDiv.style.padding = '4px 0 8px';
+      container.appendChild(gratDiv);
+    }
   });
 }
 
@@ -2509,6 +2559,14 @@ function loadMoreTimeline() {
       moodSpan.textContent = entry.mood;
       moodSpan.setAttribute('aria-label', 'Mood: ' + entry.mood);
       ul.parentElement.insertBefore(moodSpan, ul.nextSibling);
+    }
+
+    // v8: Gratitude display
+    if (entry.gratitude) {
+      const gratDiv = document.createElement('div');
+      gratDiv.className = 'gratitude-inline';
+      gratDiv.textContent = '\u2764\uFE0F ' + entry.gratitude;
+      card.appendChild(gratDiv);
     }
 
     const footer = document.createElement('div');
@@ -3785,6 +3843,9 @@ function initApp() {
   renderMoodSelector();
   renderDailyPrompt();
   refreshToday();
+  // v8: Gratitude auto-resize
+  var gratInput = document.getElementById('gratitudeInput');
+  if (gratInput) { gratInput.addEventListener('input', function() { autoResize(gratInput); }); }
 
   document.getElementById('addMoreBtn').addEventListener('click', () => {
     const container = document.getElementById('winFields');
