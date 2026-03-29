@@ -1,5 +1,9 @@
 # Changelog
 
+## v16.0 (2026-03-29) — Entry Character Count
+
+- **Character Count**: Shows character count on each win entry textarea, with "detailed win!" badge at 200+ characters
+- SW cache bumped to `winlog-v16.0`
 ## v15.0 — Random Reflection Prompt (2026-03-29)
 
 **Random Reflection Prompt**

@@ -2136,9 +2136,23 @@ function addWinField(container, idx) {
   input.rows = 1;
   input.placeholder = PLACEHOLDERS[idx] || PLACEHOLDERS[0];
   input.setAttribute('aria-label', `Победа ${idx + 1}`);
+  // v16: Character count with "detailed win!" badge
+  const charCountEl = document.createElement('div');
+  charCountEl.className = 'win-char-count';
+  charCountEl.style.cssText = 'font-size:0.7rem;color:var(--text-muted);text-align:right;margin-top:2px;min-height:1.2em;transition:color 0.2s;';
+  function updateCharCount() {
+    const len = input.value.length;
+    if (len === 0) { charCountEl.textContent = ''; return; }
+    if (len >= 200) {
+      charCountEl.innerHTML = len + ' chars <span style="background:linear-gradient(135deg,var(--accent-primary),#f59e0b);color:#fff;font-weight:700;padding:1px 6px;border-radius:6px;font-size:0.65rem;margin-left:4px;">detailed win!</span>';
+    } else {
+      charCountEl.textContent = len + ' chars';
+    }
+  }
   input.addEventListener('input', () => {
     autoResize(input);
     updateSaveBtn();
+    updateCharCount();
   });
   div.appendChild(input);
 
@@ -2152,6 +2166,7 @@ function addWinField(container, idx) {
     div.appendChild(mic);
   }
 
+  div.appendChild(charCountEl); // v16
   container.appendChild(div);
 }
 
