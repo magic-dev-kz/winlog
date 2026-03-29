@@ -1,5 +1,20 @@
 # Changelog
 
+## v15.0 — Random Reflection Prompt (2026-03-29)
+
+**Random Reflection Prompt**
+- New "Reflect" card in Insights tab with a daily-changing prompt
+- 15 reflection prompts about patterns, growth, consistency, and self-awareness
+- Prompt selected by day-of-year modulo, changes every day
+- Styled with accent-colored left border and italic text
+- "New prompt every day" caption below the prompt
+- Placed after Monthly Highlights card in the insights flow
+
+### Technical
+- Service worker cache bumped to `winlog-v15.0`
+
+---
+
 ## v14.0 — Win Streak Freeze (2026-03-29)
 
 **Win Streak Freeze**

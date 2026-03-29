@@ -2889,6 +2889,35 @@ async function refreshInsights() {
   const highlightsCard = buildMonthlyHighlights(entries);
   if (highlightsCard) container.appendChild(highlightsCard);
 
+  // v15: Random Reflection Prompt
+  const reflectionPrompts = [
+    'What pattern do you see in your wins this month?',
+    'Which win surprised you the most recently?',
+    'What small habit led to your biggest wins?',
+    'How have your wins changed compared to last month?',
+    'Which category are you growing in the fastest?',
+    'What would you tell your past self about these wins?',
+    'Which win are you most proud of and why?',
+    'What common thread connects your recent victories?',
+    'What new skill helped you win more often?',
+    'If you could double down on one area, which would it be?',
+    'What obstacle did you overcome to achieve recent wins?',
+    'Which win had the biggest ripple effect on other areas?',
+    'What does your streak tell you about your consistency?',
+    'How do your weekday wins differ from weekend wins?',
+    'What would make next month even better?'
+  ];
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  const reflectionIdx = dayOfYear % reflectionPrompts.length;
+  const reflectionCard = document.createElement('div');
+  reflectionCard.className = 'insight-card';
+  reflectionCard.innerHTML = `<h3>Reflect</h3>
+    <div style="font-size:var(--font-body);color:var(--text-primary);line-height:var(--lh-relaxed);padding:12px 0;font-style:italic;border-left:3px solid var(--accent-primary);padding-left:16px;margin:8px 0">
+      ${escapeHtml(reflectionPrompts[reflectionIdx])}
+    </div>
+    <div style="font-size:var(--font-caption);color:var(--text-muted);margin-top:8px">New prompt every day</div>`;
+  container.appendChild(reflectionCard);
+
   // v5: Growth chart
   await renderGrowthChart();
 
