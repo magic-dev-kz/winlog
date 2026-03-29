@@ -1,0 +1,17 @@
+{
+  "name": "WinLog - Дневник достижений",
+  "short_name": "WinLog",
+  "description": "Записывай победы. Видь рост. Верь в себя.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFF9F0",
+  "theme_color": "#FFF9F0",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>%E2%AD%90</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
