@@ -1,5 +1,12 @@
 # Changelog
 
+## v17.0 (2026-03-29) — Accessibility Pass
+
+- **Skip link**: Already present (verified)
+- **Win textarea**: Already had `aria-label` per entry (verified)
+- **Mood buttons**: Changed from `role="radio"` + `aria-checked` to `aria-pressed` toggle buttons; mood row changed from `radiogroup` to `group`
+- SW cache bumped to `winlog-v17.0`
+
 ## v16.0 (2026-03-29) — Entry Character Count
 
 - **Character Count**: Shows character count on each win entry textarea, with "detailed win!" badge at 200+ characters

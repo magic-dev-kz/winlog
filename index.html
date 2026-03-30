@@ -1313,7 +1313,7 @@ mark {
   transition: all var(--duration-fast) var(--ease-bounce);
 }
 .mood-btn:hover { transform: scale(1.15); border-color: var(--accent-primary); }
-.mood-btn[aria-checked="true"] {
+.mood-btn[aria-pressed="true"] {
   border-color: var(--accent-primary);
   background: var(--accent-light);
   transform: scale(1.1);
@@ -1557,7 +1557,7 @@ mark {
     </div>
     <div class="mood-section">
       <div class="mood-label">Настроение (опционально):</div>
-      <div class="mood-row" id="moodRow" role="radiogroup" aria-label="Настроение"></div>
+      <div class="mood-row" id="moodRow" role="group" aria-label="Настроение"></div>
       <div class="mood-week-stat" id="moodWeekStat"></div>
     </div>
     <div class="save-area">
@@ -3545,8 +3545,7 @@ function renderMoodSelector() {
     btn.className = 'mood-btn';
     btn.type = 'button';
     btn.textContent = m.emoji;
-    btn.setAttribute('role', 'radio');
-    btn.setAttribute('aria-checked', selectedMood === m.emoji ? 'true' : 'false');
+    btn.setAttribute('aria-pressed', selectedMood === m.emoji ? 'true' : 'false');
     btn.setAttribute('aria-label', m.label);
     btn.addEventListener('click', () => {
       if (selectedMood === m.emoji) {
@@ -3555,7 +3554,7 @@ function renderMoodSelector() {
         selectedMood = m.emoji;
       }
       row.querySelectorAll('.mood-btn').forEach(b => {
-        b.setAttribute('aria-checked', b.textContent === selectedMood ? 'true' : 'false');
+        b.setAttribute('aria-pressed', b.textContent === selectedMood ? 'true' : 'false');
       });
     });
     row.appendChild(btn);
