@@ -4701,7 +4701,6 @@ saveEntry = async function() {
 // Boot
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  registerSW();
   initOnboarding();
   if (Settings.get('onboardingDone')) {
     initApp();
@@ -4711,7 +4710,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('#winFields .win-input').forEach(input => {
       input.addEventListener('input', saveDraft);
     });
-    setupReminder();
+    // v26: Defer non-critical features to not block first paint
+    var _deferInit = function(fn) {
+      if ('requestIdleCallback' in window) { requestIdleCallback(fn); }
+      else { setTimeout(fn, 100); }
+    };
+    _deferInit(function() { setupReminder(); });
+    _deferInit(function() { registerSW(); });
+  } else {
+    // v26: Still defer SW registration even without onboarding
+    if ('requestIdleCallback' in window) { requestIdleCallback(function() { registerSW(); }); }
+    else { setTimeout(function() { registerSW(); }, 100); }
   }
 });
 
