@@ -1543,6 +1543,20 @@ mark {
       </div>
     </div>
     <div class="settings-group">
+      <label>Резервная копия</label>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-secondary" id="backupExportBtn" style="flex:1;min-height:44px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export JSON
+        </button>
+        <button class="btn-secondary" id="backupImportBtn" style="flex:1;min-height:44px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Import JSON
+        </button>
+        <input type="file" id="backupFileInput" accept=".json" hidden>
+      </div>
+    </div>
+    <div class="settings-group">
       <button class="btn-danger" id="clearDataBtn">Очистить все данные</button>
     </div>
   </div>
@@ -1568,6 +1582,12 @@ mark {
       <div class="daily-prompt-hint">Prompt of the day</div>
     </div>
     <div class="today-subtitle">Чем ты гордишься сегодня?</div>
+    <!-- v21: Entry Templates -->
+    <div id="entryTemplates" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+      <button type="button" class="entry-tpl-btn" data-tpl="quick" style="font-size:.75rem;padding:5px 12px;border-radius:20px;border:1px solid var(--accent-primary,#f59e0b);background:transparent;color:var(--accent-primary,#f59e0b);cursor:pointer;transition:all .2s;font-family:inherit;">Quick win</button>
+      <button type="button" class="entry-tpl-btn" data-tpl="achievement" style="font-size:.75rem;padding:5px 12px;border-radius:20px;border:1px solid var(--accent-secondary,#a78bfa);background:transparent;color:var(--accent-secondary,#a78bfa);cursor:pointer;transition:all .2s;font-family:inherit;">Achievement</button>
+      <button type="button" class="entry-tpl-btn" data-tpl="milestone" style="font-size:.75rem;padding:5px 12px;border-radius:20px;border:1px solid var(--accent-tertiary,#34d399);background:transparent;color:var(--accent-tertiary,#34d399);cursor:pointer;transition:all .2s;font-family:inherit;">Milestone</button>
+    </div>
     <div class="win-fields" id="winFields"></div>
     <div class="word-count-bar" id="wordCountBar"><span class="wc-icon" aria-hidden="true">Aa</span> <span id="wordCountValue">0 words</span></div>
     <button class="add-more-btn" id="addMoreBtn" type="button">
@@ -4226,6 +4246,85 @@ function initApp() {
     }
   });
 
+  // ═══ JSON Backup / Restore (v22) ═══
+  document.getElementById('backupExportBtn').addEventListener('click', async () => {
+    try {
+      const entries = await db.getAll();
+      const settings = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('wl_') || key === 'winlog_entries')) {
+          settings[key] = localStorage.getItem(key);
+        }
+      }
+      const backup = {
+        app: 'WinLog',
+        version: 22,
+        exportedAt: new Date().toISOString(),
+        entries: entries,
+        settings: settings
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'winlog-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('Backup exported!');
+    } catch (err) {
+      showToast('Export failed: ' + err.message);
+    }
+  });
+
+  const backupFileInput = document.getElementById('backupFileInput');
+  document.getElementById('backupImportBtn').addEventListener('click', () => backupFileInput.click());
+  backupFileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const backup = JSON.parse(text);
+      if (!backup.app || backup.app !== 'WinLog' || !Array.isArray(backup.entries)) {
+        showToast('Invalid backup file');
+        return;
+      }
+      if (!confirm('Import ' + backup.entries.length + ' entries? Existing entries with same dates will be preserved.')) return;
+      const existing = await db.getAll();
+      const existingDates = new Set();
+      existing.forEach(en => {
+        const key = en.date + '_' + (en.wins ? en.wins.map(w => w.text || w).join('|') : '');
+        existingDates.add(key);
+      });
+      let imported = 0;
+      for (const entry of backup.entries) {
+        const key = entry.date + '_' + (entry.wins ? entry.wins.map(w => w.text || w).join('|') : '');
+        if (!existingDates.has(key)) {
+          const clean = Object.assign({}, entry);
+          delete clean.id;
+          await db.addEntry(clean);
+          imported++;
+        }
+      }
+      // Merge settings
+      if (backup.settings) {
+        for (const [k, v] of Object.entries(backup.settings)) {
+          if (!localStorage.getItem(k)) {
+            try { localStorage.setItem(k, v); } catch {}
+          }
+        }
+      }
+      showToast(imported + ' entries imported!');
+      backupFileInput.value = '';
+      location.reload();
+    } catch (err) {
+      showToast('Import failed: ' + err.message);
+      backupFileInput.value = '';
+    }
+  });
+
   // Voice overlay
   document.getElementById('voiceCancel').addEventListener('click', () => closeVoiceOverlay(false));
   document.getElementById('voiceDone').addEventListener('click', () => closeVoiceOverlay(true));
@@ -4557,6 +4656,41 @@ saveEntry = async function() {
   updateWordCount();
   renderMoodSparkline();
 };
+
+// ═══════════════════════════════════════════
+// v21: Entry Templates — pre-fill win fields
+// ═══════════════════════════════════════════
+(function initEntryTemplates() {
+  const TEMPLATES = {
+    quick: ['Быстрая победа: ', 'Сделал: ', 'Успел сегодня: '],
+    achievement: ['Достижение дня: ', 'Горжусь тем, что: ', 'Преодолел: '],
+    milestone: ['Веха: ', 'Важный шаг: ', 'Прорыв: ']
+  };
+  document.querySelectorAll('.entry-tpl-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tpl = btn.getAttribute('data-tpl');
+      var prefills = TEMPLATES[tpl];
+      if (!prefills) return;
+      var inputs = document.querySelectorAll('#winFields .win-input');
+      prefills.forEach(function(text, i) {
+        if (inputs[i] && !inputs[i].value.trim()) {
+          inputs[i].value = text;
+          inputs[i].style.height = 'auto';
+          inputs[i].style.height = Math.min(inputs[i].scrollHeight, 120) + 'px';
+          inputs[i].dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      });
+      if (inputs[0]) inputs[0].focus();
+      // Visual feedback: highlight clicked button
+      btn.style.background = btn.style.color;
+      btn.style.color = '#fff';
+      setTimeout(function() {
+        btn.style.background = 'transparent';
+        btn.style.color = '';
+      }, 400);
+    });
+  });
+})();
 
 // ═══════════════════════════════════════════
 // Boot

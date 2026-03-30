@@ -1,5 +1,15 @@
 # Changelog
 
+## v22.0 (2026-03-29) — JSON Backup/Restore
+
+- **JSON backup/restore**: Export button in Settings downloads full journal as JSON (all entries, mood, gratitude, categories, settings). Import button merges data — deduplicates by date+content, preserves existing entries, restores missing settings
+- SW cache bumped to `winlog-v22.0`
+
+## v21.0 (2026-03-29) — Entry Templates
+
+- **Entry templates**: Three template buttons above win fields — "Quick win", "Achievement", "Milestone" — each pre-fills empty win inputs with Russian-language prompts (e.g., "Быстрая победа:", "Достижение дня:", "Веха:"); only fills empty fields; visual feedback on click; auto-focuses first input
+- SW cache bumped to `winlog-v21.0`
+
 ## v20.0 (2026-03-29) — Print Styles
 
 - **Print stylesheet**: `@media print` rules — hides onboarding, settings, tab bar, modals, voice overlay; shows today's wins + timeline entries; white bg, black text; page breaks on timeline cards
