@@ -1453,6 +1453,29 @@ mark {
 .oc-footer{text-align:center;padding:20px 16px 24px;margin-top:24px}
 .oc-footer a{font-size:.78rem;color:var(--text-muted,var(--text-secondary,#888));text-decoration:none;opacity:.6;transition:opacity .2s}
 .oc-footer a:hover{opacity:1}
+
+/* === Print Styles === */
+@media print{
+  #onboarding,.settings-btn,.settings-panel,.tab-bar,
+  .export-modal-overlay,.voice-overlay,.milestone-overlay,
+  .skip-link,.pwa-banner,.oc-footer,.toast,
+  .add-more-btn,.categories-section,.daily-prompt,
+  .win-templates,.word-count-bar,.streak-trophies,
+  .confetti-canvas,
+  button{display:none!important}
+  body{background:#fff!important;color:#000!important;font-size:12pt}
+  #app{max-width:100%;padding:0;margin:0;background:#fff!important}
+  .screen{display:none!important}
+  #screen-today,#screen-timeline{display:block!important;background:#fff!important}
+  .today-header{color:#000!important}
+  .today-header h1{color:#000!important}
+  .today-greeting .date{color:#333!important}
+  .streak-badge{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .win-fields .win-field{break-inside:avoid;border:1px solid #ccc;background:#fff!important;color:#000!important;margin-bottom:8px;padding:8px}
+  .timeline-card{break-inside:avoid;border:1px solid #ccc;background:#fff!important;color:#000!important;box-shadow:none;margin-bottom:8px}
+  .timeline-card-wins li{color:#000!important}
+  @page{margin:1.5cm;size:auto}
+}
 </style>
 </head>
 <body>

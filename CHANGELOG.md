@@ -1,5 +1,10 @@
 # Changelog
 
+## v20.0 (2026-03-29) — Print Styles
+
+- **Print stylesheet**: `@media print` rules — hides onboarding, settings, tab bar, modals, voice overlay; shows today's wins + timeline entries; white bg, black text; page breaks on timeline cards
+- SW cache bumped to `winlog-v20.0`
+
 ## v19.0 (2026-03-29) — Error Handling Hardening
 
 - **Empty entry guard**: Prevent saving when all fields are empty — shows toast + shake animation
