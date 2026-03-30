@@ -1,5 +1,10 @@
 # Changelog
 
+## v19.0 (2026-03-29) — Error Handling Hardening
+
+- **Empty entry guard**: Prevent saving when all fields are empty — shows toast + shake animation
+- SW cache bumped to `winlog-v19.0`
+
 ## v18.0 (2026-03-29) — SEO / Meta Pass
 
 - **robots meta**: Added `<meta name="robots" content="index, follow">`
